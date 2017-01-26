@@ -1,0 +1,7 @@
+before_install:
+    - sudo apt-get -qq update
+    - sudo apt-get install -qq libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+
+language: cpp
+compiler: gcc
+script: mkdir build && cd build && cmake .. && make
