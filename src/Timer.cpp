@@ -16,7 +16,7 @@ void Timer::start()
     if (!started) {
         started = true;
         paused = false;
-        startTicks = SDL_GetTicks();
+        startTicks = MANGLE_SDL(SDL_GetTicks)();
         pausedTicks = 0;
     }
 }
@@ -35,7 +35,7 @@ void Timer::pause()
 {
     if (started && !paused) {
         paused = true;
-        pausedTicks = SDL_GetTicks() - startTicks;
+        pausedTicks = MANGLE_SDL(SDL_GetTicks)() - startTicks;
         startTicks = 0;
     }
 }
@@ -45,12 +45,12 @@ void Timer::unpause()
 {
     if (started && paused) {
         paused = false;
-        startTicks = SDL_GetTicks() - pausedTicks;
+        startTicks = MANGLE_SDL(SDL_GetTicks)() - pausedTicks;
         pausedTicks = 0;
     }
 }
 
-// Gibt die Ticks des Timers zurück
+// Gibt die Ticks des Timers zurï¿½ck
 int Timer::getTicks()
 {
     int time = 0;
@@ -59,7 +59,7 @@ int Timer::getTicks()
         if (paused) {
             time = pausedTicks;
         } else {
-            time = SDL_GetTicks() - startTicks;
+            time = MANGLE_SDL(SDL_GetTicks)() - startTicks;
         }
     }
 

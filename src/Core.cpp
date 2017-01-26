@@ -60,13 +60,13 @@ Core::~Core()
 {
     if (renderer != NULL) {
         std::cout << "close renderer" << std::endl;
-        SDL_DestroyRenderer(renderer);
+        MANGLE_SDL(SDL_DestroyRenderer)(renderer);
         renderer = NULL;
     }
 
     if (window != NULL) {
         std::cout << "close window" << std::endl;
-        SDL_DestroyWindow(window);
+        MANGLE_SDL(SDL_DestroyWindow)(window);
         window = NULL;
     }
 
@@ -98,37 +98,37 @@ void Core::quit()
     IMG_Quit();
     TTF_Quit();
     Mix_Quit();
-    SDL_Quit();
+    MANGLE_SDL(SDL_Quit)();
     std::cout << "core quitted" << std::endl;
 }
 
 int Core::init()
 {
     //initialisiert sdl, sdl_image, sdl_ttf, sdl_mixer
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+    if (MANGLE_SDL(SDL_Init)(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         return -1;
     }
 
-    if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
-        SDL_Quit();
+    if (!MANGLE_SDL(SDL_SetHint)(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+        MANGLE_SDL(SDL_Quit)();
         return -2;
     }
 
     int imgFlags = IMG_INIT_PNG;
 
     if (!(IMG_Init(imgFlags) & imgFlags)) {
-        SDL_Quit();
+        MANGLE_SDL(SDL_Quit)();
         return -3;
     }
 
     if (TTF_Init() == -1) {
-        SDL_Quit();
+        MANGLE_SDL(SDL_Quit)();
         IMG_Quit();
         return -4;
     }
 
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-        SDL_Quit();
+        MANGLE_SDL(SDL_Quit)();
         IMG_Quit();
         TTF_Quit();
         return -5;
@@ -150,25 +150,26 @@ int Core::setup()
 
     if (!inited) {
         //erstellt ein sdl fenster mit titel weite und h�he
-        window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_UNDEFINED,
-                                  SDL_WINDOWPOS_UNDEFINED, windowWidth,
-                                  windowHeight, SDL_WINDOW_SHOWN);
+        window = MANGLE_SDL(SDL_CreateWindow)(windowTitle.c_str(),
+                                             SDL_WINDOWPOS_UNDEFINED,
+                                             SDL_WINDOWPOS_UNDEFINED, windowWidth,
+                                             windowHeight, SDL_WINDOW_SHOWN);
 
         if (window == NULL) {
             return -6;
         }
 
         SDL_Surface *iconSurface = IMG_Load("icon.ico");
-        SDL_SetWindowIcon(window, iconSurface);
-        SDL_FreeSurface(iconSurface);
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        MANGLE_SDL(SDL_SetWindowIcon)(window, iconSurface);
+        MANGLE_SDL(SDL_FreeSurface)(iconSurface);
+        renderer = MANGLE_SDL(SDL_CreateRenderer)(window, -1, SDL_RENDERER_ACCELERATED);
 
         if (renderer == NULL) {
             return -7;
         }
 
         //setzt den standard hintergrund
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        MANGLE_SDL(SDL_SetRenderDrawColor)(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
         int size = 50;
 
         // TODO: make font size relative

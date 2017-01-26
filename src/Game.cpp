@@ -119,7 +119,7 @@ int Game::run()
     while (running) {
         timer.start();
 
-        while (SDL_PollEvent(&event) != 0) {
+        while (MANGLE_SDL(SDL_PollEvent)(&event) != 0) {
             if (event.type == SDL_QUIT) {
                 running = false;
             }
@@ -138,7 +138,7 @@ int Game::run()
         int frameTicks = timer.getTicks();
 
         if (frameTicks < SCREEN_TICKS_PER_FRAME) {
-            SDL_Delay(SCREEN_TICKS_PER_FRAME - frameTicks);
+            MANGLE_SDL(SDL_Delay)(SCREEN_TICKS_PER_FRAME - frameTicks);
         }
 
         timer.stop();
@@ -173,9 +173,9 @@ int Game::onEvent(SDL_Event *event)
 void Game::onRender()
 {
     if (activeScene > -1) {
-        SDL_RenderClear(Core::getInstance()->getRenderer());
+        MANGLE_SDL(SDL_RenderClear)(Core::getInstance()->getRenderer());
         getCurrentScene<Scene>().onRender();
-        SDL_RenderPresent(Core::getInstance()->getRenderer());
+        MANGLE_SDL(SDL_RenderPresent)(Core::getInstance()->getRenderer());
     }
 }
 

@@ -69,7 +69,8 @@ void Animation::addImage(const std::string &path)
     int status = t.loadImage(path);
 
     if (0 != status) {
-        std::cout << "Failed to load Texture!" <<  SDL_GetError() << std::endl;
+        std::cout << "Failed to load Texture!" <<  MANGLE_SDL(SDL_GetError)() <<
+                  std::endl;
     }
 
     addTexture(t);

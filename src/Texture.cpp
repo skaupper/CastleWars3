@@ -35,7 +35,7 @@ Texture &Texture::operator=(Texture &&tex)
 Texture::~Texture()
 {
     if (texture) {
-        SDL_DestroyTexture(texture);
+        MANGLE_SDL(SDL_DestroyTexture)(texture);
         std::cout << "~Texture" << std::endl;
     }
 }
@@ -60,18 +60,19 @@ int Texture::loadText(const std::string &text, const SDL_Color &color,
     }
 
     SDL_Texture *nTexture = NULL;
-    nTexture = SDL_CreateTextureFromSurface(Core::getInstance()->getRenderer(),
-                                            textSurface);
+    nTexture = MANGLE_SDL(SDL_CreateTextureFromSurface)
+               (Core::getInstance()->getRenderer(),
+                textSurface);
 
     if (nTexture == NULL) {
         return -2;
     }
 
     std::cout << "Texture" << std::endl;
-    SDL_FreeSurface(textSurface);
+    MANGLE_SDL(SDL_FreeSurface)(textSurface);
     texture = nTexture;
     int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    MANGLE_SDL(SDL_QueryTexture)(texture, NULL, NULL, &w, &h);
     Texture::clip = Texture::size = { 0, 0, w, h };
     return 0;
 }
@@ -85,8 +86,9 @@ int Texture::loadImage(const std::string &path)
         return -1;
     }
 
-    nTexture = SDL_CreateTextureFromSurface(Core::getInstance()->getRenderer(),
-                                            loadedSurface);
+    nTexture = MANGLE_SDL(SDL_CreateTextureFromSurface)
+               (Core::getInstance()->getRenderer(),
+                loadedSurface);
 
     if (nTexture == NULL) {
         return -2;
@@ -95,7 +97,7 @@ int Texture::loadImage(const std::string &path)
     std::cout << "Texture" << std::endl;
     clip = { 0, 0, loadedSurface->w, loadedSurface->h };
     size = clip;
-    SDL_FreeSurface(loadedSurface);
+    MANGLE_SDL(SDL_FreeSurface)(loadedSurface);
     texture = nTexture;
     return 0;
 }
@@ -146,10 +148,10 @@ int Texture::onRender(const Location &loc, bool flip)
     int ret;
 
     if (flip) {
-        ret = SDL_RenderCopyEx(renderer, texture, &clip, &rect, 0, &point,
-                               SDL_FLIP_HORIZONTAL);
+        ret = MANGLE_SDL(SDL_RenderCopyEx)(renderer, texture, &clip, &rect, 0, &point,
+                                          SDL_FLIP_HORIZONTAL);
     } else {
-        ret =  SDL_RenderCopy(renderer, texture, &clip, &rect);
+        ret =  MANGLE_SDL(SDL_RenderCopy)(renderer, texture, &clip, &rect);
     }
 
     return ret;
