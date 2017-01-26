@@ -34,3 +34,7 @@ TARGET_LINK_LIBRARIES (CastleWars ${SDL2_LIBRARY}
                                   ${SDL2_IMAGE_LIBRARIES}
                                   ${SDL2_TTF_LIBRARIES}
                                   ${SDL2_MIXER_LIBRARIES})
+
+SET (CMAKE_INSTALL_PREFIX ${CastleWars_SOURCE_DIR})
+INSTALL (TARGETS CastleWars DESTINATION bin )
+INSTALL (DIRECTORY res/ DESTINATION bin )

@@ -1,14 +1,12 @@
 #include "Entity.h"
 #include <iostream>
 
-//standard konstruktor
-Entity::Entity(Location *loc, Scene *parentScene, string descr,
-               bool isCollidable) : Element(loc, descr, isCollidable)
+Entity::Entity(const Location &loc, std::shared_ptr<Scene> parentScene,
+               const std::string &descr, bool isCollidable) :
+    Element(loc, descr, isCollidable), parentScene(parentScene)
 {
-    Entity::parentScene = parentScene;
 }
 
-//entität wird um x/y bewegt
 void Entity::move(float x, float y)
 {
     Entity::location->x += x;
@@ -16,15 +14,13 @@ void Entity::move(float x, float y)
 }
 
 
-//entität wird zur position loc bewegt
 void Entity::moveTo(float x, float y)
 {
     Entity::location->x = x;
     Entity::location->y = y;
 }
 
-//prüft ob die entität mit einem anderem element kollidiert
-bool Entity::collidesWith(Element *other, void (*func)(Entity *))
+bool Entity::collidesWith(const Element &other)
 {
     float x = location->x;
     float y = location->y;
@@ -81,22 +77,10 @@ bool Entity::collidesWith(Element *other, void (*func)(Entity *))
         collides = true;
     }
 
-    /*
-    if((x < otherx && x + w > otherx + otherw) && ((y < othery + otherh&& y >othery) || (y + h > othery&& y + h < othery + otherh)))
-        return true;
-    */
-    if (collides && other->descr == "box") {
-        func(this);
-        return false;
-    }
-
+    // TODO: check if all cases are here!
     return collides;
 }
 
 Entity::~Entity()
 {
-    delete location;
-    delete collisionRect;
-    clear();
-    delete animations;
 }

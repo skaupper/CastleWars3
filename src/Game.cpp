@@ -106,7 +106,7 @@ void Game::removeScene(int index)
 
 int Game::run()
 {
-    int status = Core::getInstance().setup();
+    int status = Core::getInstance()->setup();
 
     if (status != 0) {
         return status;
@@ -124,7 +124,13 @@ int Game::run()
                 running = false;
             }
 
-            onEvent(&event);
+            status = onEvent(&event);
+
+            // TODO: introduce codes
+            if (status != 0) {
+                running = false;
+                break;
+            }
         }
 
         onLoop();
@@ -149,18 +155,31 @@ void Game::onLoop()
     }
 }
 
-void Game::onEvent(SDL_Event *event)
+int Game::onEvent(SDL_Event *event)
 {
+    int status = 0;
+
     if (activeScene > -1) {
-        getCurrentScene<Scene>().onEvent(event);
+        status = getCurrentScene<Scene>().onEvent(event);
+
+        if (status != 0) {
+            return status;
+        }
     }
+
+    return 0;
 }
 
 void Game::onRender()
 {
     if (activeScene > -1) {
-        SDL_RenderClear(Core::getInstance().getRenderer());
+        SDL_RenderClear(Core::getInstance()->getRenderer());
         getCurrentScene<Scene>().onRender();
-        SDL_RenderPresent(Core::getInstance().getRenderer());
+        SDL_RenderPresent(Core::getInstance()->getRenderer());
     }
+}
+
+void Game::stop()
+{
+    running = false;
 }

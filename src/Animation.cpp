@@ -5,67 +5,83 @@
 #include "Animation.h"
 
 
-//descr:        Animation Description Identifier (ADI)
-//frameDelta:   Frames, bis auf den n�chsten Frame gesprungen wird
-Animation::Animation(std::string descr, int frameDelta)
+Animation::Animation(const std::string &description, int framesPerTexture) :
+    frameCounter(0),
+    framesPerTexture(framesPerTexture),
+    currentIndex(0),
+    description(description)
 {
-    frameCount = 0;
-    Animation::descr = descr;
-    Animation::frameDelta = frameDelta;
-    i = 0;
 }
 
-// Setzt frameCount auf 0
 void Animation::reset()
 {
-    frameCount = 0;
+    frameCounter = 0;
+    currentIndex = -1;
 }
 
-// Gibt die aktuelle Textur zur�ck
-Texture &Animation::getTexture()
+Texture &Animation::getNextTexture()
 {
-    auto &tmp = textures[frameCount];
+    auto &tmp = getCurrentTexture();
     incFrameCount();
     return tmp;
 }
 
-void Animation::addTexture(Texture &texture)
+Texture &Animation::getCurrentTexture()
 {
-    textures.push_back(texture);
+    if (hasTexture(currentIndex)) {
+        return textures[currentIndex];
+    }
+
+    throw "Texture not found";
 }
 
-// Setzt frameCount auf frameCount + 1
-// Wenn frameCount die Anzahl der Texturen �bersteigt, wird es auf 0 gesetzt
+bool Animation::hasTexture(int index)
+{
+    return index >= 0 && index < textures.size();
+}
+
+void Animation::addTexture(const Texture &texture)
+{
+    textures.push_back(std::move((Texture &) texture));
+
+    if (textures.size() == 1) {
+        currentIndex = 0;
+    }
+}
+
 void Animation::incFrameCount()
 {
-    if (frameDelta == -1) {
+    if (framesPerTexture <= 0) {
         return;
     }
 
-    if (i < frameDelta - 1) {
-        i++;
+    if (frameCounter < framesPerTexture - 1) {
+        frameCounter++;
     } else {
-        i = 0;
-
-        if (frameCount + 1 >= textures.size()) {
-            frameCount = 0;
-        } else {
-            frameCount++;
-        }
+        frameCounter = 0;
+        currentIndex = (currentIndex + 1) % textures.size();
     }
 }
 
-void Animation::addImage(std::string path, SDL_Rect size)
+void Animation::addImage(const std::string &path)
 {
     Texture t;
+    int status = t.loadImage(path);
 
-    if (0 != t.loadImage(path, {0}, size)) {
-        std::cout << "Failed to load Texture!" << std::endl;
+    if (0 != status) {
+        std::cout << "Failed to load Texture!" <<  SDL_GetError() << std::endl;
     }
-    Animation::addTexture(t);
+
+    addTexture(t);
 }
 
-void Animation::addText(std::string text, SDL_Color *color, short size)
+void Animation::addImage(const std::string &path, SDL_Rect size)
+{
+    addImage(path);
+    textures.back().setSize(size);
+}
+
+void Animation::addText(const std::string &text, SDL_Color color, short size)
 {
     Texture t;
 
@@ -73,26 +89,20 @@ void Animation::addText(std::string text, SDL_Color *color, short size)
         std::cout << "Failed to load text: " << text << std::endl;
     }
 
-    delete color;
     addTexture(t);
 }
 
-// Setzt frameDelta
-void Animation::setDelta(int frameDelta)
+void Animation::setFramesPerTexture(int frames)
 {
-    Animation::frameDelta = frameDelta;
+    framesPerTexture = frames;
 }
 
-// Destruktor
 Animation::~Animation()
 {
+    textures.clear();
 }
 
-void Animation::clear()
+std::string Animation::getDescription()
 {
-    for (auto &texture : textures) {
-        texture.clear();
-    }
-
-    textures.clear();
+    return description;
 }

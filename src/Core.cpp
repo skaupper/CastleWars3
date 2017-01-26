@@ -4,8 +4,7 @@
 #include <iostream>
 
 //singleton
-Core Core::instance;
-bool Core::instantiated = false;
+Core *Core::instance = NULL;
 bool Core::depsInited = false;
 
 Core::Core()
@@ -47,47 +46,60 @@ Core::Core(Core &&core)
 Core::Core(int width, int height, const std::string &windowTitle) :
     windowTitle(windowTitle),
     windowHeight(height),
-    windowWidth(width)
+    windowWidth(width),
+    window(NULL),
+    renderer(NULL),
+    largeFont(NULL),
+    mediumFont(NULL),
+    smallFont(NULL),
+    inited(false)
 {
-    instantiated = true;
 }
 
 Core::~Core()
 {
-    if (!window) {
-        SDL_DestroyWindow(window);
-        window = NULL;
-    }
-
-    if (!renderer) {
+    if (renderer != NULL) {
+        std::cout << "close renderer" << std::endl;
         SDL_DestroyRenderer(renderer);
         renderer = NULL;
     }
 
-    if (!largeFont) {
+    if (window != NULL) {
+        std::cout << "close window" << std::endl;
+        SDL_DestroyWindow(window);
+        window = NULL;
+    }
+
+    if (largeFont != NULL) {
+        std::cout << "close font" << std::endl;
         TTF_CloseFont(largeFont);
         largeFont = NULL;
     }
 
-    if (!mediumFont) {
+    if (mediumFont != NULL) {
+        std::cout << "close font" << std::endl;
         TTF_CloseFont(mediumFont);
         mediumFont = NULL;
     }
 
-    if (!smallFont) {
+    if (smallFont != NULL) {
+        std::cout << "close font" << std::endl;
         TTF_CloseFont(smallFont);
         smallFont = NULL;
     }
+
+    std::cout << "core destructed" << std::endl;
 }
 
 void Core::quit()
 {
-    instance = Core();
-    instantiated = false;
+    delete instance;
+    instance = NULL;
     IMG_Quit();
     TTF_Quit();
-    SDL_Quit();
     Mix_Quit();
+    SDL_Quit();
+    std::cout << "core quitted" << std::endl;
 }
 
 int Core::init()
@@ -148,6 +160,7 @@ int Core::setup()
 
         SDL_Surface *iconSurface = IMG_Load("icon.ico");
         SDL_SetWindowIcon(window, iconSurface);
+        SDL_FreeSurface(iconSurface);
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
         if (renderer == NULL) {
@@ -182,25 +195,26 @@ int Core::setup()
     return 0;
 }
 
-bool Core::isInstantiated()
+Core *Core::getInstance()
 {
-    return instantiated;
-}
+    if (!instance) {
+        instance = new Core(800, 600, "TestWindow");
+    }
 
-Core &Core::getInstance()
-{
-    if (!instantiated) {
-        throw "No core instance created";
+    if (!instance->inited) {
+        if (instance->setup() != 0) {
+            throw "Core setup failed";
+        }
     }
 
     return instance;
 }
 
-Core &Core::getInstance(int width, int height, const std::string &windowTitle)
+Core *Core::getInstance(int width, int height, const std::string &windowTitle)
 {
     //singleton
-    if (!instantiated) {
-        return (instance = std::move(Core(width, height, windowTitle)));
+    if (!instance) {
+        return (instance = new Core(width, height, windowTitle));
     }
 
     return instance;

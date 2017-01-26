@@ -8,28 +8,35 @@
 
 #include "Texture.h"
 
-using namespace std;
-
 class Animation
 {
     public:
-        int i;
-        Animation(std::string descr, int frameDelta);
+        Animation(const std::string &descr, int frameDelta = 1);
         virtual ~Animation();
-        void reset();
-        void addTexture(Texture &texture);
-        Texture &getTexture();
+
+        void addImage(const std::string &path);
+        void addImage(const std::string &path, SDL_Rect rect);
+        void addText(const std::string &text, SDL_Color color, short size);
+        void addTexture(const Texture &texture);
+
+        bool hasTexture(int index);
+
+        Texture &getNextTexture();
+        Texture &getCurrentTexture();
+
         void incFrameCount();
-        void setDelta(int frameDelta);
-        void addImage(std::string path, SDL_Rect rect);
-        void addText(std::string text, SDL_Color *color, short size);
-        void clear();
+        void setFramesPerTexture(int frames);
+
+        void reset();
+
+        std::string getDescription();
 
     private:
+        int frameCounter;
+        int framesPerTexture;
+        int currentIndex;
         std::vector<Texture> textures;
-        int frameDelta;
-        int frameCount;
-        std::string descr;
+        std::string description;
 };
 
 #endif // ANIMATION_H

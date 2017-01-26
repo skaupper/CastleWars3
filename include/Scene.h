@@ -18,7 +18,7 @@ class Game;
 class Scene
 {
     public:
-        Scene(int id, string name, Game *game);
+        Scene(int id, const std::string &name, Game *game);
         Scene(Scene &&scene);
         Scene &operator=(Scene &&scene);
         virtual ~Scene();
@@ -37,9 +37,9 @@ class Scene
         template <typename T> T &getElement(const std::string &name);
         template <typename T, typename... Params> T &getElement(int index);
 
-        void onLoop();
-        void onRender();
-        void onEvent(SDL_Event *);
+        virtual void onLoop();
+        virtual void onRender();
+        virtual int onEvent(SDL_Event *);
 
         std::string getName() const;
 
@@ -75,6 +75,7 @@ template <typename T> T &Scene::getElement(const std::string &name)
             return *((T *) element.get());
         }
     }
+
     throw "Element not found";
 }
 
@@ -83,6 +84,7 @@ template <typename T, typename... Params> T &Scene::getElement(int index)
     if (index >= 0 && index < elements.size()) {
         return *((T *) elements[index].get());
     }
+
     throw "Element not found";
 }
 

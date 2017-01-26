@@ -38,6 +38,7 @@ class Game
 
         template <typename T> T &getCurrentScene();
         int run();
+        void stop();
 
     private:
         std::vector<std::shared_ptr<Scene>> scenes;
@@ -46,7 +47,7 @@ class Game
         Timer timer;
 
         void onLoop();
-        void onEvent(SDL_Event *);
+        int onEvent(SDL_Event *);
         void onRender();
 };
 
@@ -59,6 +60,11 @@ template <typename T> T &Game::addScene(const T &scene)
 template <typename T> T &Game::addScene(const std::shared_ptr<T> &scene)
 {
     scenes.push_back(scene);
+
+    if (scenes.size() == 1) {
+        activeScene = 0;
+    }
+
     return *((T *) scenes.back().get());
 }
 
@@ -75,6 +81,7 @@ template <typename T> T &Game::getScene(const std::string &name)
             return *((T *) scene.get());
         }
     }
+
     throw "Scene not found";
 }
 
@@ -83,6 +90,7 @@ template <typename T, typename... Params> T &Game::getScene(int index)
     if (index >= 0 && index < scenes.size()) {
         return *((T *) scenes[index].get());
     }
+
     throw "Scene not found";
 }
 

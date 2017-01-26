@@ -18,14 +18,19 @@ class Texture
         Texture();
         virtual ~Texture();
 
+        Texture(Texture &&);
+        Texture &operator=(Texture &&);
+
         int loadText(const std::string &text, const SDL_Color &color, short size = 0);
 
         int loadImage(const std::string &path);
         int loadImage(const std::string &path, const SDL_Rect &clip);
-        int loadImage(const std::string &path, const SDL_Rect &clip, const SDL_Rect &size);
+        int loadImage(const std::string &path, const SDL_Rect &clip,
+                      const SDL_Rect &size);
 
         SDL_Rect getSize();
         void setSize(int w, int h);
+        void setSize(const SDL_Rect &rect);
 
         int onRender(const Location &loc, bool flip = false);
 

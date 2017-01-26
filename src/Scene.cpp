@@ -3,11 +3,11 @@
 #include "Scene.h"
 
 
-Scene::Scene(int id, string name, Game *game)
+Scene::Scene(int id, const std::string &name, Game *game)
 {
-    Scene::game = game;  //game die die scene beinhaltet
-    Scene::id = id;    //id der scene
-    Scene::name = name;  //name der scene
+    Scene::game = game;
+    Scene::id = id;
+    Scene::name = name;
 }
 
 Scene &Scene::operator=(Scene &&scene)
@@ -60,13 +60,16 @@ bool Scene::hasElement(const std::string &name)
 void Scene::removeElement(const std::string &name)
 {
     int index = 0;
+
     for (auto &element : elements) {
         if (element->getDescription() == name) {
             elements.erase(elements.begin() + index);
             return;
         }
+
         index++;
     }
+
     throw "Element not found";
 }
 
@@ -93,11 +96,19 @@ void Scene::onLoop()
     }
 }
 
-void Scene::onEvent(SDL_Event *event)
+int Scene::onEvent(SDL_Event *event)
 {
+    int status = 0;
+
     for (auto &element : elements) {
-        element->onEvent(event);
+        status = element->onEvent(event);
+
+        if (status != 0) {
+            return status;
+        }
     }
+
+    return 0;
 }
 
 std::string Scene::getName() const

@@ -16,20 +16,60 @@
 class TestScene : public Scene
 {
     public:
-        TestScene(int id, const std::string &name, Game *game) : Scene(id, name, game)
+
+        TestScene(int id, const std::string &name, Game *game) : Scene(id, name,
+                    game) {}
+        virtual int onEvent(SDL_Event *event)
         {
-            std::cout << getName() << std::endl;
+            if (event->type == SDL_MOUSEBUTTONDOWN
+                    && ((SDL_MouseButtonEvent *)event)->button == SDL_BUTTON_LEFT) {
+                return 1;
+            }
+
+            return Scene::onEvent(event);
         }
 };
 
 int main(int argc, char *argv[])
 {
-    Core::init();
+    std::cout << Core::init() << std::endl;
 
     try {
         Game game(1024, 768, "TestWindow");
-        Scene &scene = game.addScene<Scene>(1, "scene1");
-        game.run();
+        TestScene &scene = game.addScene<TestScene>(1, "scene1");
+        Element &element = scene.addElement<Element>(Location{0, 0}, "testelement");
+        Animation &animation = element.addAnimation<Animation>("testanimation", 60);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addImage("jo.png");
+        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        std::cout << game.run() << std::endl;
     } catch (const char *s) {
         std::cout << s << std::endl;
     }

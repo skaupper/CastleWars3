@@ -19,8 +19,7 @@ enum class FontSize {
 class Core
 {
     private:
-        static Core instance;
-        static bool instantiated;
+        static Core *instance;
         static bool depsInited;
         bool inited;
 
@@ -46,8 +45,8 @@ class Core
     public:
         static int init();
         static bool isInstantiated();
-        static Core &getInstance();
-        static Core &getInstance(int width, int height, const std::string &windowTitle);
+        static Core *getInstance();
+        static Core *getInstance(int width, int height, const std::string &windowTitle);
         static void quit();
 
         virtual ~Core();
