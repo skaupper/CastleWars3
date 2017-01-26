@@ -4,4 +4,5 @@ before_install:
 
 language: cpp
 compiler: gcc
+dist: yakkety
 script: mkdir build && cd build && cmake .. && make
