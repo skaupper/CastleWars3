@@ -33,6 +33,7 @@ void Game::setActiveScene(const std::string &name)
         index++;
     }
 
+    Logger::LogCritical("Game::setActiveScene(const std::string & = " + name + "): Scene not found");
     throw "Scene not found";
 }
 
@@ -41,6 +42,7 @@ void Game::setActiveScene(int index)
     if (index < scenes.size() && index >= 0) {
         activeScene = index;
     } else {
+        Logger::LogCritical("Game::setActiveScene(int = " + std::to_string(index) + "): Scene not found");
         throw "Scene not found";
     }
 }
@@ -60,24 +62,6 @@ bool Game::hasScene(int index)
 {
     return index < scenes.size() && index >= 0;
 }
-/*
-Scene &Game::addScene(const Scene &scene)
-{
-    scenes.push_back(std::move((Scene &) scene));
-
-    if (scenes.size() == 1) {
-        setActiveScene(scene->getName());
-    }
-
-    return scenes[scenes.size() - 1];
-}
-
-Scene &Game::addScene(int id, const std::string &name))
-{
-    return addScene(Scene(id, name))
-}
-*/
-
 
 void Game::removeScene(const std::string &name)
 {
@@ -92,6 +76,7 @@ void Game::removeScene(const std::string &name)
         index++;
     }
 
+    Logger::LogCritical("Game::removeScene(const std::string & = " + name + "): Scene not found");
     throw "Scene not found";
 }
 
@@ -100,6 +85,7 @@ void Game::removeScene(int index)
     if (index < scenes.size() && index >= 0) {
         scenes.erase(scenes.begin() + index);
     } else {
+        Logger::LogCritical("Game::removeScene(int = " + std::to_string(index) + "): Scene not found");
         throw "Scene not found";
     }
 }

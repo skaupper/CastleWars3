@@ -59,47 +59,39 @@ Core::Core(int width, int height, const std::string &windowTitle) :
 Core::~Core()
 {
     if (renderer != NULL) {
-        std::cout << "close renderer" << std::endl;
         MANGLE_SDL(SDL_DestroyRenderer)(renderer);
         renderer = NULL;
     }
 
     if (window != NULL) {
-        std::cout << "close window" << std::endl;
         MANGLE_SDL(SDL_DestroyWindow)(window);
         window = NULL;
     }
 
     if (largeFont != NULL) {
-        std::cout << "close font" << std::endl;
-        TTF_CloseFont(largeFont);
+        MANGLE_SDL(TTF_CloseFont)(largeFont);
         largeFont = NULL;
     }
 
     if (mediumFont != NULL) {
-        std::cout << "close font" << std::endl;
-        TTF_CloseFont(mediumFont);
+        MANGLE_SDL(TTF_CloseFont)(mediumFont);
         mediumFont = NULL;
     }
 
     if (smallFont != NULL) {
-        std::cout << "close font" << std::endl;
-        TTF_CloseFont(smallFont);
+        MANGLE_SDL(TTF_CloseFont)(smallFont);
         smallFont = NULL;
     }
-
-    std::cout << "core destructed" << std::endl;
 }
 
 void Core::quit()
 {
     delete instance;
     instance = NULL;
-    IMG_Quit();
-    TTF_Quit();
-    Mix_Quit();
+    MANGLE_SDL(IMG_Quit)();
+    MANGLE_SDL(TTF_Quit)();
+    MANGLE_SDL(Mix_Quit)();
     MANGLE_SDL(SDL_Quit)();
-    std::cout << "core quitted" << std::endl;
 }
 
 int Core::init()
@@ -116,21 +108,21 @@ int Core::init()
 
     int imgFlags = IMG_INIT_PNG;
 
-    if (!(IMG_Init(imgFlags) & imgFlags)) {
+    if (!(MANGLE_SDL(IMG_Init)(imgFlags) & imgFlags)) {
         MANGLE_SDL(SDL_Quit)();
         return -3;
     }
 
-    if (TTF_Init() == -1) {
+    if (MANGLE_SDL(TTF_Init)() == -1) {
         MANGLE_SDL(SDL_Quit)();
-        IMG_Quit();
+        MANGLE_SDL(IMG_Quit)();
         return -4;
     }
 
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+    if (MANGLE_SDL(Mix_OpenAudio)(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         MANGLE_SDL(SDL_Quit)();
-        IMG_Quit();
-        TTF_Quit();
+        MANGLE_SDL(IMG_Quit)();
+        MANGLE_SDL(TTF_Quit)();
         return -5;
     }
 
@@ -151,15 +143,15 @@ int Core::setup()
     if (!inited) {
         //erstellt ein sdl fenster mit titel weite und h�he
         window = MANGLE_SDL(SDL_CreateWindow)(windowTitle.c_str(),
-                                             SDL_WINDOWPOS_UNDEFINED,
-                                             SDL_WINDOWPOS_UNDEFINED, windowWidth,
-                                             windowHeight, SDL_WINDOW_SHOWN);
+                                              SDL_WINDOWPOS_UNDEFINED,
+                                              SDL_WINDOWPOS_UNDEFINED, windowWidth,
+                                              windowHeight, SDL_WINDOW_SHOWN);
 
         if (window == NULL) {
             return -6;
         }
 
-        SDL_Surface *iconSurface = IMG_Load("icon.ico");
+        SDL_Surface *iconSurface = MANGLE_SDL(IMG_Load)("icon.ico");
         MANGLE_SDL(SDL_SetWindowIcon)(window, iconSurface);
         MANGLE_SDL(SDL_FreeSurface)(iconSurface);
         renderer = MANGLE_SDL(SDL_CreateRenderer)(window, -1, SDL_RENDERER_ACCELERATED);
@@ -181,12 +173,12 @@ int Core::setup()
             size = 58;
         }
 
-        largeFont = TTF_OpenFont("FUTURAB.ttf", size);
-        mediumFont = TTF_OpenFont("FUTURAB.ttf", size / 2);
-        smallFont = TTF_OpenFont("FUTURAB.ttf", size / 4);
+        largeFont = MANGLE_SDL(TTF_OpenFont)("FUTURAB.ttf", size);
+        mediumFont = MANGLE_SDL(TTF_OpenFont)("FUTURAB.ttf", size / 2);
+        smallFont = MANGLE_SDL(TTF_OpenFont)("FUTURAB.ttf", size / 4);
 
         if (largeFont == NULL || mediumFont == NULL || smallFont == NULL) {
-            std::cout << "font fail" << std::endl;
+            Logger::LogError("Core::setup: Failed to load font (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
             return -8;
         }
 
@@ -204,6 +196,7 @@ Core *Core::getInstance()
 
     if (!instance->inited) {
         if (instance->setup() != 0) {
+            Logger::LogCritical("Core::getInstance(): Core setup failed (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
             throw "Core setup failed";
         }
     }

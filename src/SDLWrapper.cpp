@@ -106,7 +106,7 @@ int SDL::SDL_RenderCopyEx(SDL_Renderer *renderer,
                           const SDL_RendererFlip flip)
 {
     return SDL_RenderCopyEx(renderer, texture, srcrect, dstrect, angle,
-                              center, flip);
+                            center, flip);
 }
 
 int SDL::SDL_RenderCopy(SDL_Renderer *renderer,
@@ -119,4 +119,53 @@ int SDL::SDL_RenderCopy(SDL_Renderer *renderer,
 uint32_t SDL::SDL_GetTicks()
 {
     return SDL_GetTicks();
+}
+
+
+int SDL::TTF_Init()
+{
+    return TTF_Init();
+}
+
+TTF_Font *SDL::TTF_OpenFont(const char *path, int size)
+{
+    return TTF_OpenFont(path, size);
+}
+
+void SDL::TTF_CloseFont(TTF_Font *font)
+{
+    TTF_CloseFont(font);
+}
+
+void SDL::TTF_Quit()
+{
+    TTF_Quit();
+}
+
+
+int SDL::IMG_Init(int flags)
+{
+    return IMG_Init(flags);
+}
+
+SDL_Surface *SDL::IMG_Load(const char *path)
+{
+    return IMG_Load(path);
+}
+
+void SDL::IMG_Quit()
+{
+    IMG_Quit();
+}
+
+
+int SDL::Mix_OpenAudio(int frequency, uint16_t channel, int format,
+                       int chunksize)
+{
+    return Mix_OpenAudio(frequency, channel, format, chunksize);
+}
+
+void SDL::Mix_Quit()
+{
+    Mix_Quit();
 }

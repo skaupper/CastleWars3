@@ -7,6 +7,8 @@
 class CoreTest : public ::testing::Test
 {
     public:
+        SDLMock *mock;
+
         CoreTest()
         {
         }
@@ -17,10 +19,12 @@ class CoreTest : public ::testing::Test
 
         virtual void SetUp()
         {
+            mock = new SDLMock;
         }
 
         virtual void TearDown()
         {
+            delete mock;
         }
 };
 

@@ -36,7 +36,7 @@ Texture::~Texture()
 {
     if (texture) {
         MANGLE_SDL(SDL_DestroyTexture)(texture);
-        std::cout << "~Texture" << std::endl;
+        Logger::LogDebug("Texture::~Texture");
     }
 }
 
@@ -68,7 +68,7 @@ int Texture::loadText(const std::string &text, const SDL_Color &color,
         return -2;
     }
 
-    std::cout << "Texture" << std::endl;
+    Logger::LogDebug("Texture::Texture");
     MANGLE_SDL(SDL_FreeSurface)(textSurface);
     texture = nTexture;
     int w, h;
@@ -94,7 +94,7 @@ int Texture::loadImage(const std::string &path)
         return -2;
     }
 
-    std::cout << "Texture" << std::endl;
+    Logger::LogDebug("Texture::Texture");
     clip = { 0, 0, loadedSurface->w, loadedSurface->h };
     size = clip;
     MANGLE_SDL(SDL_FreeSurface)(loadedSurface);
@@ -149,7 +149,7 @@ int Texture::onRender(const Location &loc, bool flip)
 
     if (flip) {
         ret = MANGLE_SDL(SDL_RenderCopyEx)(renderer, texture, &clip, &rect, 0, &point,
-                                          SDL_FLIP_HORIZONTAL);
+                                           SDL_FLIP_HORIZONTAL);
     } else {
         ret =  MANGLE_SDL(SDL_RenderCopy)(renderer, texture, &clip, &rect);
     }

@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "Logger.h"
 #include "SDLWrapper.h"
 
 enum class FontSize {
@@ -41,7 +42,6 @@ class Core
 
     public:
         static int init();
-        static bool isInstantiated();
         static Core *getInstance();
         static Core *getInstance(int width, int height, const std::string &windowTitle);
         static void quit();

@@ -14,7 +14,10 @@ using namespace ::testing;
 class SDLMock : public SDL
 {
     public:
-        SDLMock() {}
+        SDLMock()
+        {
+            SDLProvider::setInstance(this);
+        }
 
         MOCK_METHOD0(SDL_GetError, const char *());
         MOCK_METHOD1(SDL_DestroyRenderer, void (SDL_Renderer *));
@@ -39,12 +42,23 @@ class SDLMock : public SDL
         MOCK_METHOD5(SDL_QueryTexture, int (SDL_Texture *, uint32_t *, int *, int *,
                                             int *));
         MOCK_METHOD7(SDL_RenderCopyEx, int (SDL_Renderer *, SDL_Texture *,
-                                            const SDL_Rect *,
-                                            const SDL_Rect *, const double, const SDL_Point *, const SDL_RendererFlip));
+                                            const SDL_Rect *, const SDL_Rect *, const double, const SDL_Point *,
+                                            const SDL_RendererFlip));
         MOCK_METHOD4(SDL_RenderCopy, int (SDL_Renderer *, SDL_Texture *,
-                                          const SDL_Rect *,
-                                          const SDL_Rect *));
+                                          const SDL_Rect *, const SDL_Rect *));
         MOCK_METHOD0(SDL_GetTicks, uint32_t ());
+
+        MOCK_METHOD0(TTF_Init, int ());
+        MOCK_METHOD2(TTF_OpenFont, TTF_Font * (const char *, int));
+        MOCK_METHOD1(TTF_CloseFont, void (TTF_Font *));
+        MOCK_METHOD0(TTF_Quit, void ());
+
+        MOCK_METHOD1(IMG_Init, int (int));
+        MOCK_METHOD1(IMG_Load, SDL_Surface * (const char *));
+        MOCK_METHOD0(IMG_Quit, void ());
+
+        MOCK_METHOD4(Mix_OpenAudio, int (int, uint16_t, int, int));
+        MOCK_METHOD0(Mix_Quit, void ());
 };
 
 #endif

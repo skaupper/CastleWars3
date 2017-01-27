@@ -90,7 +90,7 @@ template <typename T> T &Element::getAnimation(const std::string &name)
             return *((T *) animation.get());
         }
     }
-
+    Logger::LogCritical("Element::getAnimation(const std::string & = " + name + "): Animation not found");
     throw "Animation not found";
 }
 
@@ -100,6 +100,7 @@ template <typename T, typename... Params> T &Element::getAnimation(int index)
         return *((T *) animations[index].get());
     }
 
+    Logger::LogCritical("Element::getAnimation(int = " + std::to_string(index) + "): Animation not found");
     throw "Animation not found";
 }
 

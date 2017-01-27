@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Texture.h"
+#include "Logger.h"
 
 class Animation
 {

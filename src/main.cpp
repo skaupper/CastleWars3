@@ -5,13 +5,6 @@
 #include "Core.h"
 #include "Game.h"
 #include "Scene.h"
-/*
-#include "Player.h"
-#include "MainMenu.h"
-#include "Options.h"
-#include "Credits.h"
-#include "StartGame.h"
-*/
 
 class TestScene : public Scene
 {

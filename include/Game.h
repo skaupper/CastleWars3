@@ -82,6 +82,7 @@ template <typename T> T &Game::getScene(const std::string &name)
         }
     }
 
+    Logger::LogCritical("Game::getScene(const std::string & = " + name + "): Scene not found");
     throw "Scene not found";
 }
 
@@ -91,12 +92,14 @@ template <typename T, typename... Params> T &Game::getScene(int index)
         return *((T *) scenes[index].get());
     }
 
+    Logger::LogCritical("Game::getScene(int = " + std::to_string(index) + "): Scene not found");
     throw "Scene not found";
 }
 
 template <typename T> T &Game::getCurrentScene()
 {
     if (activeScene == -1) {
+        Logger::LogCritical("Game::getCurrentScene(): Scene not found");
         throw "No scene added";
     }
 

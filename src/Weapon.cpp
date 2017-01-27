@@ -96,7 +96,7 @@ int projectileOnLoop(Element *ele)
 
             ((Weapon *)ele)->shooting = false;
             ((Weapon *)ele)->projectileTemplate->clear();
-            delete ((Weapon *)ele)->projectileTemplate;
+            delete((Weapon *)ele)->projectileTemplate;
             ((Weapon *)ele)->projectileTemplate = NULL;
             break;
         }

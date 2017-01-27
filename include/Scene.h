@@ -76,6 +76,7 @@ template <typename T> T &Scene::getElement(const std::string &name)
         }
     }
 
+    Logger::LogCritical("Scene::getElement(const std::string & = " + name + "): Element not found");
     throw "Element not found";
 }
 
@@ -85,6 +86,7 @@ template <typename T, typename... Params> T &Scene::getElement(int index)
         return *((T *) elements[index].get());
     }
 
+    Logger::LogCritical("Scene::getElement(int = " + std::to_string(index) + "): Element not found");
     throw "Element not found";
 }
 

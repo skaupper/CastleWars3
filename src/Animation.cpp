@@ -32,6 +32,7 @@ Texture &Animation::getCurrentTexture()
         return textures[currentIndex];
     }
 
+    Logger::LogCritical("Animation::getCurrentTexture(): Texture not found");
     throw "Texture not found";
 }
 
@@ -68,9 +69,9 @@ void Animation::addImage(const std::string &path)
     Texture t;
     int status = t.loadImage(path);
 
-    if (0 != status) {
-        std::cout << "Failed to load Texture!" <<  MANGLE_SDL(SDL_GetError)() <<
-                  std::endl;
+    if (status != 0) {
+        Logger::LogError("Animation::addImage(const std::string &): Failed to load Texture (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
+        return;
     }
 
     addTexture(t);
@@ -85,9 +86,10 @@ void Animation::addImage(const std::string &path, SDL_Rect size)
 void Animation::addText(const std::string &text, SDL_Color color, short size)
 {
     Texture t;
-
-    if (0 != t.loadText(text, color, size)) {
-        std::cout << "Failed to load text: " << text << std::endl;
+    int status = t.loadText(text, color, size);
+    if (status != 0) {
+        Logger::LogError("Animation::addText(const std::string &, SDL_Color, short): Failed to load text (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
+        return;
     }
 
     addTexture(t);
