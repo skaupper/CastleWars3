@@ -1,7 +1,9 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 3.0.0)
+CMAKE_MINIMUM_REQUIRED (VERSION 2.8.0)
 PROJECT (CastleWars)
 
 OPTION (ENABLE_TESTS "Set to TRUE if you want to run the testcases afterwards" FALSE)
+OPTION (GMOCK_SOURCE "Path to the gmock-all.cc" "/usr/src/gmock/gmock-all.cc")
+OPTION (GMOCK_LIBS "Path to the GMock libs" OFF)
 SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CastleWars_SOURCE_DIR}/cmake)
 
 FIND_PACKAGE (SDL2 REQUIRED)
@@ -29,8 +31,11 @@ SET (LIB_LIBS ${SDL2_LIBRARY}
               ${SDL2_MIXER_LIBRARIES})
 
 SET (TEST_SOURCES test/main.cpp
-                  test/CoreTest.cpp
-                  /usr/src/gmock/gmock-all.cc)
+                  test/CoreTest.cpp)
+
+IF (NOT GMOCK_LIBS)
+    SET (TEST_SOURCES ${TEST_SOURCES} ${GMOCK_SOURCE})
+ENDIF ()
 
 
 
@@ -58,8 +63,11 @@ IF(${ENABLE_TESTS})
 
     # compile test
     ADD_EXECUTABLE (CastleWarsTests ${TEST_SOURCES})
-    TARGET_INCLUDE_DIRECTORIES (CastleWarsTests PRIVATE /usr/src/gmock)
+    TARGET_INCLUDE_DIRECTORIES (CastleWarsTests PRIVATE /usr/src/gmock /usr/src)
     TARGET_LINK_LIBRARIES (CastleWarsTests bkengine pthread ${GTEST_BOTH_LIBRARIES})
+    IF (GMOCK_LIBS)
+        TARGET_LINK_LIBRARIES (CastleWarsTests ${GMOCK_LIBS})
+    ENDIF ()
     ADD_TEST (NAME Tests COMMAND CastleWarsTests)
 ENDIF()
 
