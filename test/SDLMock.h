@@ -17,6 +17,7 @@ class SDLMock : public SDL
         SDLMock()
         {
             SDLProvider::setInstance(this);
+
         }
 
         MOCK_METHOD0(SDL_GetError, const char *());
@@ -50,6 +51,7 @@ class SDLMock : public SDL
 
         MOCK_METHOD0(TTF_Init, int ());
         MOCK_METHOD2(TTF_OpenFont, TTF_Font * (const char *, int));
+        MOCK_METHOD3(TTF_RenderText_Solid, SDL_Surface * (TTF_Font *, const char *, SDL_Color));
         MOCK_METHOD1(TTF_CloseFont, void (TTF_Font *));
         MOCK_METHOD0(TTF_Quit, void ());
 

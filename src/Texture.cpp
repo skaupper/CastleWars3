@@ -53,7 +53,7 @@ int Texture::loadText(const std::string &text, const SDL_Color &color,
         font = Core::getInstance()->getFont(FontSize::LARGE);
     }
 
-    SDL_Surface *textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+    SDL_Surface *textSurface = MANGLE_SDL(TTF_RenderText_Solid)(font, text.c_str(), color);
 
     if (textSurface == NULL) {
         return -1;

@@ -59,6 +59,7 @@ class SDL
 
         virtual int TTF_Init();
         virtual TTF_Font *TTF_OpenFont(const char *, int);
+        virtual SDL_Surface *TTF_RenderText_Solid(TTF_Font *, const char *, SDL_Color);
         virtual void TTF_CloseFont(TTF_Font *);
         virtual void TTF_Quit();
 

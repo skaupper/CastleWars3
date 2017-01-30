@@ -124,48 +124,53 @@ uint32_t SDL::SDL_GetTicks()
 
 int SDL::TTF_Init()
 {
-    return TTF_Init();
+    return ::TTF_Init();
 }
 
 TTF_Font *SDL::TTF_OpenFont(const char *path, int size)
 {
-    return TTF_OpenFont(path, size);
+    return ::TTF_OpenFont(path, size);
+}
+
+SDL_Surface *SDL::TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color color)
+{
+    return ::TTF_RenderText_Solid(font, text, color);
 }
 
 void SDL::TTF_CloseFont(TTF_Font *font)
 {
-    TTF_CloseFont(font);
+    ::TTF_CloseFont(font);
 }
 
 void SDL::TTF_Quit()
 {
-    TTF_Quit();
+    ::TTF_Quit();
 }
 
 
 int SDL::IMG_Init(int flags)
 {
-    return IMG_Init(flags);
+    return ::IMG_Init(flags);
 }
 
 SDL_Surface *SDL::IMG_Load(const char *path)
 {
-    return IMG_Load(path);
+    return ::IMG_Load(path);
 }
 
 void SDL::IMG_Quit()
 {
-    IMG_Quit();
+    ::IMG_Quit();
 }
 
 
 int SDL::Mix_OpenAudio(int frequency, uint16_t channel, int format,
                        int chunksize)
 {
-    return Mix_OpenAudio(frequency, channel, format, chunksize);
+    return ::Mix_OpenAudio(frequency, channel, format, chunksize);
 }
 
 void SDL::Mix_Quit()
 {
-    Mix_Quit();
+    ::Mix_Quit();
 }

@@ -38,6 +38,7 @@ uint32_t test_SDL_GetTicks();
 
 int test_TTF_Init();
 TTF_Font *test_TTF_OpenFont(const char *, int);
+SDL_Surface *test_TTF_RenderText_Solid(TTF_Font *, const char *, SDL_Color);
 void test_TTF_CloseFont(TTF_Font *);
 void test_TTF_Quit();
 

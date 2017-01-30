@@ -34,7 +34,7 @@ class Texture
 
         int onRender(const Location &loc, bool flip = false);
 
-    private:
+    protected:
         bool flip;
         SDL_Texture *texture = NULL;
         SDL_Rect clip;
