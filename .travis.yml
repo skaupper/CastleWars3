@@ -15,7 +15,9 @@ before_install:
     - cd -
     - export GMOCK_LIBS="gmock;gmock_main"
 language: cpp
-compiler: gcc
+compiler: 
+    - gcc
+    - clang
 script: ./travis.sh
 dist: trusty
 env:
