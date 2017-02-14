@@ -41,15 +41,6 @@ bool Animation::hasTexture(int index)
     return index >= 0 && index < textures.size();
 }
 
-void Animation::addTexture(const Texture &texture)
-{
-    textures.push_back(std::move((Texture &) texture));
-
-    if (textures.size() == 1) {
-        currentIndex = 0;
-    }
-}
-
 void Animation::incFrameCount()
 {
     if (framesPerTexture <= 0) {
@@ -64,35 +55,20 @@ void Animation::incFrameCount()
     }
 }
 
+
 void Animation::addImage(const std::string &path)
 {
-    Texture t;
-    int status = t.loadImage(path);
-
-    if (status != 0) {
-        Logger::LogError("Animation::addImage(const std::string &): Failed to load Texture (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
-        return;
-    }
-
-    addTexture(t);
+    addImage<Texture>(path);
 }
 
 void Animation::addImage(const std::string &path, SDL_Rect size)
 {
-    addImage(path);
-    textures.back().setSize(size);
+    addImage<Texture>(path, size);
 }
 
-void Animation::addText(const std::string &text, SDL_Color color, short size)
+void Animation::addText(const std::string &text, const Color &color, short size)
 {
-    Texture t;
-    int status = t.loadText(text, color, size);
-    if (status != 0) {
-        Logger::LogError("Animation::addText(const std::string &, SDL_Color, short): Failed to load text (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
-        return;
-    }
-
-    addTexture(t);
+    addText<Texture>(text, color, size);
 }
 
 void Animation::setFramesPerTexture(int frames)

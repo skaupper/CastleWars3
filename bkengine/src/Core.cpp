@@ -178,7 +178,8 @@ int Core::setup()
         smallFont = MANGLE_SDL(TTF_OpenFont)("FUTURAB.ttf", size / 4);
 
         if (largeFont == NULL || mediumFont == NULL || smallFont == NULL) {
-            Logger::LogError("Core::setup: Failed to load font (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
+            Logger::LogError("Core::setup: Failed to load font (" + std::string(MANGLE_SDL(
+                                 SDL_GetError)()) + ")");
             return -8;
         }
 
@@ -196,7 +197,8 @@ Core *Core::getInstance()
 
     if (!instance->inited) {
         if (instance->setup() != 0) {
-            Logger::LogCritical("Core::getInstance(): Core setup failed (" + std::string(MANGLE_SDL(SDL_GetError)()) + ")");
+            Logger::LogCritical("Core::getInstance(): Core setup failed (" + std::string(
+                                    MANGLE_SDL(SDL_GetError)()) + ")");
             throw "Core setup failed";
         }
     }

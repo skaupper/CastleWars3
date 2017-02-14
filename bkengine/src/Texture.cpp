@@ -7,42 +7,72 @@
 
 static int texturecount = 0;
 
+
+std::map<std::string, std::shared_ptr<TextureWrapper>> Texture::imageCache;
+std::map<std::string, std::map<Color, std::map<short, std::shared_ptr<TextureWrapper>>>>
+Texture::textCache;
+
+std::shared_ptr<TextureWrapper> Texture::getCached(const std::string &s)
+{
+    return imageCache[s];
+}
+
+std::shared_ptr<TextureWrapper> Texture::getCached(const std::string &s,
+        const Color &c, short size)
+{
+    return textCache[s][c][size];
+}
+
+bool Texture::hasTextureCached(const std::string &s)
+{
+    if (imageCache.find(s) == imageCache.end()) {
+        return false;
+    }
+
+    return true;
+}
+
+bool Texture::hasTextureCached(const std::string &s, const Color &c, short size)
+{
+    if (textCache.find(s) == textCache.end()) {
+        return false;
+    }
+
+    if (textCache[s].find(c) == textCache[s].end()) {
+        return false;
+    }
+
+    if (textCache[s][c].find(size) == textCache[s][c].end()) {
+        return false;
+    }
+
+    return true;
+}
+
 Texture::Texture() : texture(NULL)
 {
     flip = false;
 }
 
-#define move(tex) \
-    { \
-        texture = tex.texture; \
-        flip = tex.flip; \
-        clip = tex.clip; \
-        size = tex.size; \
-        tex.texture = NULL; \
-    }
-
-Texture::Texture(Texture &&tex)
-{
-    move(tex);
-}
-
-Texture &Texture::operator=(Texture &&tex)
-{
-    move(tex);
-    return *this;
-}
-
 Texture::~Texture()
 {
     if (texture) {
-        MANGLE_SDL(SDL_DestroyTexture)(texture);
         Logger::LogDebug("Texture::~Texture");
     }
 }
 
-int Texture::loadText(const std::string &text, const SDL_Color &color,
+int Texture::loadText(const std::string &text, const Color &color,
                       short size)
 {
+    if (hasTextureCached(text, color, size)) {
+        auto tex = getCached(text, color, size);
+        int w, h;
+        texture = tex;
+        MANGLE_SDL(SDL_QueryTexture)(tex->get(), NULL, NULL, &w, &h);
+        Texture::clip = Texture::size = { 0, 0, w, h };
+        return 0;
+    }
+
     TTF_Font *font = NULL;
 
     if (size < 0) {
@@ -53,7 +83,7 @@ int Texture::loadText(const std::string &text, const SDL_Color &color,
         font = Core::getInstance()->getFont(FontSize::LARGE);
     }
 
-    SDL_Surface *textSurface = MANGLE_SDL(TTF_RenderText_Solid)(font, text.c_str(), color);
+    SDL_Surface *textSurface = MANGLE_SDL(TTF_RenderText_Solid)(font, text.c_str(), {color.r, color.g, color.b, color.a });
 
     if (textSurface == NULL) {
         return -1;
@@ -70,15 +100,25 @@ int Texture::loadText(const std::string &text, const SDL_Color &color,
 
     Logger::LogDebug("Texture::Texture");
     MANGLE_SDL(SDL_FreeSurface)(textSurface);
-    texture = nTexture;
+    texture = std::make_shared<TextureWrapper>(nTexture);
+    textCache[text][color][size] = texture;
     int w, h;
-    MANGLE_SDL(SDL_QueryTexture)(texture, NULL, NULL, &w, &h);
+    MANGLE_SDL(SDL_QueryTexture)(texture->get(), NULL, NULL, &w, &h);
     Texture::clip = Texture::size = { 0, 0, w, h };
     return 0;
 }
 
 int Texture::loadImage(const std::string &path)
 {
+    if (hasTextureCached(path)) {
+        auto tex = getCached(path);
+        int w, h;
+        texture = tex;
+        MANGLE_SDL(SDL_QueryTexture)(tex->get(), NULL, NULL, &w, &h);
+        Texture::clip = Texture::size = { 0, 0, w, h };
+        return 0;
+    }
+
     SDL_Texture *nTexture = NULL;
     SDL_Surface *loadedSurface = IMG_Load(path.c_str());
 
@@ -98,7 +138,7 @@ int Texture::loadImage(const std::string &path)
     clip = { 0, 0, loadedSurface->w, loadedSurface->h };
     size = clip;
     MANGLE_SDL(SDL_FreeSurface)(loadedSurface);
-    texture = nTexture;
+    texture = imageCache[path] = std::make_shared<TextureWrapper>(nTexture);
     return 0;
 }
 
@@ -148,10 +188,11 @@ int Texture::onRender(const Location &loc, bool flip)
     int ret;
 
     if (flip) {
-        ret = MANGLE_SDL(SDL_RenderCopyEx)(renderer, texture, &clip, &rect, 0, &point,
+        ret = MANGLE_SDL(SDL_RenderCopyEx)(renderer, texture->get(), &clip, &rect, 0,
+                                           &point,
                                            SDL_FLIP_HORIZONTAL);
     } else {
-        ret =  MANGLE_SDL(SDL_RenderCopy)(renderer, texture, &clip, &rect);
+        ret =  MANGLE_SDL(SDL_RenderCopy)(renderer, texture->get(), &clip, &rect);
     }
 
     return ret;

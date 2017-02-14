@@ -15,7 +15,7 @@
 class Element
 {
     public:
-        Element(const Location &loc, const std::string &description = "",
+        Element(const std::string &description = "", const Location &loc = {0, 0},
                 bool isCollidable = false);
         virtual ~Element();
 
@@ -45,14 +45,13 @@ class Element
         virtual int onEvent(SDL_Event *e);
 
         Location getLocation();
-        int getId();
         std::string getDescription();
 
-    private:
+    protected:
+        std::string description;
         SDL_Rect collisionRect;
         Location location;
         bool flipped;
-        std::string description;
         int frame;
         bool isCollidable = false;
         int currentAnimation;
@@ -90,7 +89,9 @@ template <typename T> T &Element::getAnimation(const std::string &name)
             return *((T *) animation.get());
         }
     }
-    Logger::LogCritical("Element::getAnimation(const std::string & = " + name + "): Animation not found");
+
+    Logger::LogCritical("Element::getAnimation(const std::string & = " + name +
+                        "): Animation not found");
     throw "Animation not found";
 }
 
@@ -100,7 +101,8 @@ template <typename T, typename... Params> T &Element::getAnimation(int index)
         return *((T *) animations[index].get());
     }
 
-    Logger::LogCritical("Element::getAnimation(int = " + std::to_string(index) + "): Animation not found");
+    Logger::LogCritical("Element::getAnimation(int = " + std::to_string(
+                            index) + "): Animation not found");
     throw "Animation not found";
 }
 

@@ -9,9 +9,7 @@
 class TestScene : public Scene
 {
     public:
-
-        TestScene(int id, const std::string &name, Game *game) : Scene(id, name,
-                    game) {}
+        TestScene(const std::string &name) : Scene(name) {}
         virtual int onEvent(SDL_Event *event)
         {
             if (event->type == SDL_MOUSEBUTTONDOWN
@@ -25,12 +23,17 @@ class TestScene : public Scene
 
 int main(int argc, char *argv[])
 {
-    std::cout << Core::init() << std::endl;
+    // Logger::SetDebugStandardOut(false);
+    // Logger::SetInfoStandardOut(false);
+    // Logger::SetWarningStandardOut(false);
+    // Logger::SetErrorStandardOut(false);
+    // Logger::SetCriticalStandardOut(false);
+    Core::init();
 
     try {
         Game game(1024, 768, "TestWindow");
-        TestScene &scene = game.addScene<TestScene>(1, "scene1");
-        Element &element = scene.addElement<Element>(Location{0, 0}, "testelement");
+        TestScene &scene = game.addScene<TestScene>("scene1");
+        Element &element = scene.addElement<Element>("testelement");
         Animation &animation = element.addAnimation<Animation>("testanimation", 60);
         animation.addImage("jo.png");
         animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
@@ -62,24 +65,11 @@ int main(int argc, char *argv[])
         animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
         animation.addImage("jo.png");
         animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        std::cout << game.run() << std::endl;
+        game.run();
     } catch (const char *s) {
-        std::cout << s << std::endl;
+        Logger::LogCritical(s);
     }
 
     Core::quit();
-    /*
-    if (load() == -1) {
-        std::cout << "Failed to load config file!" << std::endl;
-    } else {
-        Game game(possibleResolutions[*resolution].width,
-                  possibleResolutions[*resolution].height, "Castle Wars");
-        game.addScene(loadMainMenu(game));
-        game.addScene(loadOptions(game));
-        game.addScene(loadCredits(game));
-        game.addScene(loadGame(game));
-        game.run();
-        game.clear();
-    }*/
     return 0;
 }

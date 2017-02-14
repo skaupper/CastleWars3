@@ -3,40 +3,27 @@
 #include "Scene.h"
 
 
-Scene::Scene(int id, const std::string &name, Game *game)
+Scene::Scene(const std::string &name)
 {
-    Scene::game = game;
-    Scene::id = id;
     Scene::name = name;
 }
 
 Scene &Scene::operator=(Scene &&scene)
 {
-    game = scene.game;
-    id = scene.id;
     name = std::move(scene.name);
     elements = std::move(scene.elements);
-    scene.game = NULL;
-    scene.id = 0;
     return *this;
 }
 
 Scene::Scene(Scene &&scene)
 {
-    game = scene.game;
-    id = scene.id;
     name = std::move(scene.name);
     elements = std::move(scene.elements);
-    scene.game = NULL;
-    scene.id = 0;
 }
 
 Scene::~Scene()
 {
-    if (game) {
-        Logger::LogDebug("Scene::~Scene(): destruct scene");
-    }
-
+    Logger::LogDebug("Scene::~Scene(): destruct scene");
     elements.clear();
 }
 
@@ -68,7 +55,9 @@ void Scene::removeElement(const std::string &name)
 
         index++;
     }
-    Logger::LogCritical("Scene::removeElement(const std::string & = " + name + "): Element not found");
+
+    Logger::LogCritical("Scene::removeElement(const std::string & = " + name +
+                        "): Element not found");
     throw "Element not found";
 }
 
@@ -77,7 +66,8 @@ void Scene::removeElement(int index)
     if (index >= 0 && index < elements.size()) {
         elements.erase(elements.begin() + index);
     } else {
-        Logger::LogCritical("Scene::removeElement(int = " + std::to_string(index) + "): Element not found");
+        Logger::LogCritical("Scene::removeElement(int = " + std::to_string(
+                                index) + "): Element not found");
         throw "Element not found";
     }
 }

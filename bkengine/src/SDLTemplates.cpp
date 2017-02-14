@@ -132,7 +132,8 @@ TTF_Font *test_TTF_OpenFont(const char *path, int size)
     return SDLProvider::getInstance()->TTF_OpenFont(path, size);
 }
 
-SDL_Surface *test_TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color color)
+SDL_Surface *test_TTF_RenderText_Solid(TTF_Font *font, const char *text,
+                                       SDL_Color color)
 {
     return SDLProvider::getInstance()->TTF_RenderText_Solid(font, text, color);
 }

@@ -8,21 +8,24 @@
 
 class TextureMock : public Texture
 {
-public:
-    static int initCount;
-    static int destructCount;
+    public:
+        static int initCount;
+        static int destructCount;
 
-    TextureMock()
-    {
-        initCount++;
-    }
-
-    virtual ~TextureMock()
-    {
-        if(texture) {
-            destructCount++;
+        TextureMock()
+        {
+            initCount++;
         }
-    }
+
+        virtual ~TextureMock()
+        {
+            if (texture) {
+                destructCount++;
+            }
+
+            imageCache.clear();
+            textCache.clear();
+        }
 };
 
 class TextureTest : public ::testing::Test

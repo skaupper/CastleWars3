@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include "Element.h"
-#include "KeyboardLayout.h"
 #include "Entity.h"
 
 class Element;
@@ -18,7 +17,7 @@ class Game;
 class Scene
 {
     public:
-        Scene(int id, const std::string &name, Game *game);
+        Scene(const std::string &name = "");
         Scene(Scene &&scene);
         Scene &operator=(Scene &&scene);
         virtual ~Scene();
@@ -45,10 +44,8 @@ class Scene
 
     private:
         std::string name;
-        int id;
 
         std::vector<std::shared_ptr<Element>> elements;
-        Game *game;
 };
 
 template <typename T> T &Scene::addElement(const T &element)
@@ -76,7 +73,8 @@ template <typename T> T &Scene::getElement(const std::string &name)
         }
     }
 
-    Logger::LogCritical("Scene::getElement(const std::string & = " + name + "): Element not found");
+    Logger::LogCritical("Scene::getElement(const std::string & = " + name +
+                        "): Element not found");
     throw "Element not found";
 }
 
@@ -86,7 +84,8 @@ template <typename T, typename... Params> T &Scene::getElement(int index)
         return *((T *) elements[index].get());
     }
 
-    Logger::LogCritical("Scene::getElement(int = " + std::to_string(index) + "): Element not found");
+    Logger::LogCritical("Scene::getElement(int = " + std::to_string(
+                            index) + "): Element not found");
     throw "Element not found";
 }
 

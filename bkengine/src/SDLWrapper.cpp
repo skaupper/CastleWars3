@@ -106,7 +106,7 @@ int SDL::SDL_RenderCopyEx(SDL_Renderer *renderer,
                           const SDL_RendererFlip flip)
 {
     return ::SDL_RenderCopyEx(renderer, texture, srcrect, dstrect, angle,
-                            center, flip);
+                              center, flip);
 }
 
 int SDL::SDL_RenderCopy(SDL_Renderer *renderer,
@@ -132,7 +132,8 @@ TTF_Font *SDL::TTF_OpenFont(const char *path, int size)
     return ::TTF_OpenFont(path, size);
 }
 
-SDL_Surface *SDL::TTF_RenderText_Solid(TTF_Font *font, const char *text, SDL_Color color)
+SDL_Surface *SDL::TTF_RenderText_Solid(TTF_Font *font, const char *text,
+                                       SDL_Color color)
 {
     return ::TTF_RenderText_Solid(font, text, color);
 }

@@ -1,6 +1,6 @@
 #include "Element.h"
 
-Element::Element(const Location &loc, const std::string &description,
+Element::Element(const std::string &description, const Location &loc,
                  bool isCollidable) :
     isCollidable(isCollidable),
     frame(0),
@@ -24,8 +24,6 @@ void Element::setAnimation(int index)
         currentAnimation = index;
     }
 }
-
-#include <iostream>
 
 void Element::onRender()
 {
