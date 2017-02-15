@@ -12,7 +12,7 @@
 class Animation
 {
     public:
-        Animation(const std::string &descr = "", int frameDelta = 1);
+        Animation(const std::string &descr = "", unsigned int frameDelta = 1);
         virtual ~Animation();
 
         void addImage(const std::string &path);
@@ -25,21 +25,21 @@ class Animation
                                            short size);
         template <typename T> void addTexture(const T &texture);
 
-        bool hasTexture(int index);
+        bool hasTexture(unsigned int index);
 
         Texture &getNextTexture();
         Texture &getCurrentTexture();
 
         void incFrameCount();
-        void setFramesPerTexture(int frames);
+        void setFramesPerTexture(unsigned int frames);
 
         void reset();
 
         std::string getDescription();
 
     protected:
-        int frameCounter;
-        int framesPerTexture;
+        unsigned int frameCounter;
+        unsigned int framesPerTexture;
         int currentIndex;
         std::vector<Texture> textures;
         std::string description;

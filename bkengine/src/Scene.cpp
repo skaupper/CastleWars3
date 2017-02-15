@@ -27,9 +27,9 @@ Scene::~Scene()
     elements.clear();
 }
 
-bool Scene::hasElement(int index)
+bool Scene::hasElement(unsigned int index)
 {
-    return index < elements.size() && index >= 0;
+    return index < elements.size();
 }
 
 bool Scene::hasElement(const std::string &name)
@@ -61,9 +61,9 @@ void Scene::removeElement(const std::string &name)
     throw "Element not found";
 }
 
-void Scene::removeElement(int index)
+void Scene::removeElement(unsigned int index)
 {
-    if (index >= 0 && index < elements.size()) {
+    if (index < elements.size()) {
         elements.erase(elements.begin() + index);
     } else {
         Logger::LogCritical("Scene::removeElement(int = " + std::to_string(

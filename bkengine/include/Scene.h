@@ -23,10 +23,10 @@ class Scene
         virtual ~Scene();
 
         bool hasElement(const std::string &name);
-        bool hasElement(int index);
+        bool hasElement(unsigned int index);
 
         void removeElement(const std::string &name);
-        void removeElement(int index);
+        void removeElement(unsigned int index);
 
 
         template <typename T> T &addElement(const T &);
@@ -34,7 +34,7 @@ class Scene
         template <typename T, typename... Params> T &addElement(Params...);
 
         template <typename T> T &getElement(const std::string &name);
-        template <typename T, typename... Params> T &getElement(int index);
+        template <typename T, typename... Params> T &getElement(unsigned int index);
 
         virtual void onLoop();
         virtual void onRender();
@@ -78,9 +78,9 @@ template <typename T> T &Scene::getElement(const std::string &name)
     throw "Element not found";
 }
 
-template <typename T, typename... Params> T &Scene::getElement(int index)
+template <typename T, typename... Params> T &Scene::getElement(unsigned int index)
 {
-    if (index >= 0 && index < elements.size()) {
+    if (index < elements.size()) {
         return *((T *) elements[index].get());
     }
 

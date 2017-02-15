@@ -47,7 +47,7 @@ TARGET_INCLUDE_DIRECTORIES (bkengine PUBLIC include/ ${SDL2_INCLUDE_DIR}
                      ${SDL2_TTF_INCLUDE_DIR}
                      ${SDL2_MIXER_INCLUDE_DIRS})
 TARGET_LINK_LIBRARIES (bkengine ${SDL_LIBS})
-
+TARGET_COMPILE_OPTIONS (bkengine PRIVATE -pedantic -Wall -Wextra -Werror -Wno-unused-parameter)
 
 IF(${ENABLE_TESTS})
     TARGET_COMPILE_DEFINITIONS(bkengine PRIVATE TEST)

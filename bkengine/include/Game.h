@@ -20,13 +20,13 @@ class Game
         virtual ~Game();
 
         void setActiveScene(const std::string &name);
-        void setActiveScene(int index);
+        void setActiveScene(unsigned int index);
 
         bool hasScene(const std::string &name);
-        bool hasScene(int index);
+        bool hasScene(unsigned int index);
 
         void removeScene(const std::string &name);
-        void removeScene(int index);
+        void removeScene(unsigned int index);
 
 
         template <typename T> T &addScene(const T &);
@@ -34,7 +34,7 @@ class Game
         template <typename T, typename... Params> T &addScene(Params...);
 
         template <typename T> T &getScene(const std::string &name);
-        template <typename T, typename... Params> T &getScene(int index);
+        template <typename T, typename... Params> T &getScene(unsigned int index);
 
         template <typename T> T &getCurrentScene();
         int run();
@@ -87,9 +87,9 @@ template <typename T> T &Game::getScene(const std::string &name)
     throw "Scene not found";
 }
 
-template <typename T, typename... Params> T &Game::getScene(int index)
+template <typename T, typename... Params> T &Game::getScene(unsigned int index)
 {
-    if (index >= 0 && index < scenes.size()) {
+    if (index < scenes.size()) {
         return *((T *) scenes[index].get());
     }
 

@@ -2,12 +2,12 @@
 
 Element::Element(const std::string &description, const Location &loc,
                  bool isCollidable) :
+     description(description),
+     location(loc),
+     flipped(false),
+     frame(0),
     isCollidable(isCollidable),
-    frame(0),
-    currentAnimation(-1),
-    description(description),
-    location(loc),
-    flipped(false)
+    currentAnimation(-1)
 {
 }
 
@@ -16,9 +16,9 @@ Location Element::getLocation()
     return Element::location;
 }
 
-void Element::setAnimation(int index)
+void Element::setAnimation(unsigned int index)
 {
-    if (index >= animations.size() || index < 0) {
+    if (index >= animations.size()) {
         currentAnimation = 0;
     } else {
         currentAnimation = index;
@@ -46,9 +46,9 @@ int Element::onEvent(SDL_Event *e)
     return 0;
 }
 
-bool Element::hasAnimation(int index)
+bool Element::hasAnimation(unsigned int index)
 {
-    return index >= 0 && index < animations.size();
+    return index < animations.size();
 }
 
 bool Element::hasAnimation(const std::string &name)
@@ -60,6 +60,36 @@ bool Element::hasAnimation(const std::string &name)
     }
 
     return false;
+}
+
+
+void Element::removeAnimation(const std::string &name)
+{
+    int index = 0;
+
+    for (auto &animation : animations) {
+        if (animation->getDescription() == name) {
+            animations.erase(animations.begin() + index);
+            return;
+        }
+
+        index++;
+    }
+
+    Logger::LogCritical("Element::removeAnimation(const std::string & = " + name +
+                        "): Animation not found");
+    throw "Animation not found";
+}
+
+void Element::removeAnimation(unsigned int index)
+{
+    if (index < animations.size()) {
+        animations.erase(animations.begin() + index);
+    } else {
+        Logger::LogCritical("Element::removeAnimation(int = " + std::to_string(
+                                index) + "): Animation not found");
+        throw "Animation not found";
+    }
 }
 
 Element::~Element()

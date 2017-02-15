@@ -5,9 +5,6 @@
 #include <sstream>
 
 
-static int texturecount = 0;
-
-
 std::map<std::string, std::shared_ptr<TextureWrapper>> Texture::imageCache;
 std::map<std::string, std::map<Color, std::map<short, std::shared_ptr<TextureWrapper>>>>
 Texture::textCache;

@@ -19,16 +19,16 @@ class Element
                 bool isCollidable = false);
         virtual ~Element();
 
-        void setAnimation(int index);
+        void setAnimation(unsigned int index);
         void addAnimation(Animation &animation);
         Animation &getCurrentAnimation();
 
 
         bool hasAnimation(const std::string &name);
-        bool hasAnimation(int index);
+        bool hasAnimation(unsigned int index);
 
         void removeAnimation(const std::string &name);
-        void removeAnimation(int index);
+        void removeAnimation(unsigned int index);
 
 
         template <typename T> T &addAnimation(const T &);
@@ -36,7 +36,7 @@ class Element
         template <typename T, typename... Params> T &addAnimation(Params...);
 
         template <typename T> T &getAnimation(const std::string &name);
-        template <typename T, typename... Params> T &getAnimation(int index);
+        template <typename T, typename... Params> T &getAnimation(unsigned int index);
 
         template <typename T> T &getCurrentAnimation();
 
@@ -95,9 +95,9 @@ template <typename T> T &Element::getAnimation(const std::string &name)
     throw "Animation not found";
 }
 
-template <typename T, typename... Params> T &Element::getAnimation(int index)
+template <typename T, typename... Params> T &Element::getAnimation(unsigned int index)
 {
-    if (index >= 0 && index < animations.size()) {
+    if (index < animations.size()) {
         return *((T *) animations[index].get());
     }
 

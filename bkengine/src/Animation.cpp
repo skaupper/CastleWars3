@@ -5,7 +5,7 @@
 #include "Animation.h"
 
 
-Animation::Animation(const std::string &description, int framesPerTexture) :
+Animation::Animation(const std::string &description, unsigned int framesPerTexture) :
     frameCounter(0),
     framesPerTexture(framesPerTexture),
     currentIndex(0),
@@ -36,14 +36,14 @@ Texture &Animation::getCurrentTexture()
     throw "Texture not found";
 }
 
-bool Animation::hasTexture(int index)
+bool Animation::hasTexture(unsigned int index)
 {
-    return index >= 0 && index < textures.size();
+    return index < textures.size();
 }
 
 void Animation::incFrameCount()
 {
-    if (framesPerTexture <= 0) {
+    if (framesPerTexture == 0) {
         return;
     }
 
@@ -71,7 +71,7 @@ void Animation::addText(const std::string &text, const Color &color, short size)
     addText<Texture>(text, color, size);
 }
 
-void Animation::setFramesPerTexture(int frames)
+void Animation::setFramesPerTexture(unsigned int frames)
 {
     framesPerTexture = frames;
 }

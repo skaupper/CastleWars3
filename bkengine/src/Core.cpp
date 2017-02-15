@@ -11,7 +11,7 @@ Core::Core()
 {
 }
 
-#define copy(core) \
+#define move(core) \
     { \
         windowTitle = core.windowTitle; \
         windowHeight = core.windowHeight; \
@@ -32,27 +32,29 @@ Core::Core()
 
 Core &Core::operator=(Core &&core)
 {
-    copy(core);
+    move(core);
     core.isValid = false;
     return *this;
 }
 
 Core::Core(Core &&core)
 {
-    copy(core);
+    move(core);
     core.isValid = false;
 }
 
+#undef move
+
 Core::Core(int width, int height, const std::string &windowTitle) :
-    windowTitle(windowTitle),
-    windowHeight(height),
-    windowWidth(width),
+    inited(false),
     window(NULL),
-    renderer(NULL),
     largeFont(NULL),
     mediumFont(NULL),
     smallFont(NULL),
-    inited(false)
+    windowHeight(height),
+    windowWidth(width),
+    windowTitle(windowTitle),
+    renderer(NULL)
 {
 }
 
@@ -251,4 +253,5 @@ TTF_Font *Core::getFont(FontSize size)
         case FontSize::LARGE:
             return largeFont;
     }
+    return NULL;
 }
