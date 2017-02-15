@@ -1,2 +1,2 @@
 # CastleWars3
-[![Build Status](https://travis-ci.org/kaupper/CastleWars3.svg?branch=master)](https://travis-ci.org/kaupper/CastleWars3)
+[![Build Status](https://ci.linuxprofi.at/job/CastleWars3/badge/icon)](https://ci.linuxprofi.at/job/CastleWars3/)
