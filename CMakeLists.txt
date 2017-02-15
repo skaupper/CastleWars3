@@ -5,6 +5,8 @@ OPTION (ENABLE_TESTS "Set to TRUE if you want to run the testcases afterwards" F
 SET (GMOCK_SOURCE "/usr/src/gmock/gmock-all.cc" CACHE STRING "Path to the gmock-all.cc")
 SET (GMOCK_LIBS "" CACHE STRING "Path to the GMock libs")
 
+SET (CMAKE_CXX_STANDARD 14)
+
 ADD_SUBDIRECTORY (bkengine)
 
 SET(SOURCES src/main.cpp)
