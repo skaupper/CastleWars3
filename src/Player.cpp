@@ -1,5 +1,3 @@
-///@Author B�hmi
-
 #include "Player.h"
 #include <iostream>
 #include <sstream>
@@ -10,7 +8,7 @@ Player::Player(Location *loc, string descr, Scene *scene,
 {
     float size = Core::getInstance()->WINDOW_WIDTH * (8.0 / 100.0);
     float heightFactor = 1.75;
-    SDL_Rect *rect = new SDL_Rect{0, 0, size, size * heightFactor};
+    Rect *rect = new Rect{0, 0, size, size * heightFactor};
     cout << rect->w << "x" << rect->h << endl;
     Player::respawn.x = respawn->x;
     Player::respawn.y = respawn->y;

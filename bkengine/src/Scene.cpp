@@ -1,6 +1,6 @@
-///@author Kaupper & B�hmi
-
 #include "Scene.h"
+
+using namespace bkengine;
 
 
 Scene::Scene(const std::string &name)
@@ -23,7 +23,6 @@ Scene::Scene(Scene &&scene)
 
 Scene::~Scene()
 {
-    Logger::LogDebug("Scene::~Scene(): destruct scene");
     elements.clear();
 }
 
@@ -56,7 +55,7 @@ void Scene::removeElement(const std::string &name)
         index++;
     }
 
-    Logger::LogCritical("Scene::removeElement(const std::string & = " + name +
+    Logger::LogCritical("Scene::removeElement(const std::string &=" + name +
                         "): Element not found");
     throw "Element not found";
 }
@@ -66,7 +65,7 @@ void Scene::removeElement(unsigned int index)
     if (index < elements.size()) {
         elements.erase(elements.begin() + index);
     } else {
-        Logger::LogCritical("Scene::removeElement(int = " + std::to_string(
+        Logger::LogCritical("Scene::removeElement(int=" + std::to_string(
                                 index) + "): Element not found");
         throw "Element not found";
     }

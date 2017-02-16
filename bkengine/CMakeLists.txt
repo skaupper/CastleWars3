@@ -32,13 +32,12 @@ SET(SOURCES src/Core.cpp
             src/Animation.cpp
             src/Texture.cpp
             src/Scene.cpp
-            src/Logger.cpp)
+            src/Logger.cpp
+            src/Misc.cpp)
 
 IF(ENABLE_TESTS)
-    SET (SOURCES ${SOURCES} src/SDLTemplates.cpp src/SDLWrapper.cpp)
+    SET (SOURCES ${SOURCES} src/SDLWrapper.cpp)
 ENDIF()
-
-
 
 # compile library
 ADD_LIBRARY (bkengine STATIC ${SOURCES})

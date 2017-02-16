@@ -27,7 +27,7 @@ class Weapon: public Entity
         WeaponType type;
         bool shooting;
         Entity projectileTemplate;
-        void setProjectileTemplate(std::string imagepath1,  SDL_Rect *imageSize);
+        void setProjectileTemplate(std::string imagepath1,  Rect *imageSize);
         void setProjectileTemplate(Animation &animation1);
         std::vector<Entity> projectiles;
     private:

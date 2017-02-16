@@ -6,20 +6,23 @@
 #include "Element.h"
 #include "Scene.h"
 
-class Scene;
-
-class Entity : public Element
+namespace bkengine
 {
-    public:
-        Entity(const Location &loc, std::shared_ptr<Scene> parentScene,
-               const std::string &descr = "", bool isCollidable = false);
-        virtual ~Entity();
+    class Scene;
 
-        void move(float x, float y);
-        void moveTo(float x, float y);
-        bool collidesWith(const Element &other);
+    class Entity : public Element
+    {
+        public:
+            Entity(const Location &loc, std::shared_ptr<Scene> parentScene,
+                   const std::string &descr = "", bool isCollidable = false);
+            virtual ~Entity();
 
-        std::shared_ptr<Scene> parentScene;
-};
+            void move(float x, float y);
+            void moveTo(float x, float y);
+            bool collidesWith(const Element &other);
+
+            std::shared_ptr<Scene> parentScene;
+    };
+}
 
 #endif // ENTITY_H

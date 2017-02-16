@@ -1,8 +1,7 @@
-///@author Kaupper
-
-
 #include "Game.h"
-#include <iostream>
+
+using namespace bkengine;
+
 
 //FPS = 60
 const float SCREEN_TICKS_PER_FRAME = 1000 / 60;
@@ -33,7 +32,7 @@ void Game::setActiveScene(const std::string &name)
         index++;
     }
 
-    Logger::LogCritical("Game::setActiveScene(const std::string & = " + name +
+    Logger::LogCritical("Game::setActiveScene(const std::string &=" + name +
                         "): Scene not found");
     throw "Scene not found";
 }
@@ -43,7 +42,7 @@ void Game::setActiveScene(unsigned int index)
     if (index < scenes.size()) {
         activeScene = index;
     } else {
-        Logger::LogCritical("Game::setActiveScene(int = " + std::to_string(
+        Logger::LogCritical("Game::setActiveScene(int=" + std::to_string(
                                 index) + "): Scene not found");
         throw "Scene not found";
     }
@@ -78,7 +77,7 @@ void Game::removeScene(const std::string &name)
         index++;
     }
 
-    Logger::LogCritical("Game::removeScene(const std::string & = " + name +
+    Logger::LogCritical("Game::removeScene(const std::string &=" + name +
                         "): Scene not found");
     throw "Scene not found";
 }
@@ -88,7 +87,7 @@ void Game::removeScene(unsigned int index)
     if (index < scenes.size()) {
         scenes.erase(scenes.begin() + index);
     } else {
-        Logger::LogCritical("Game::removeScene(int = " + std::to_string(
+        Logger::LogCritical("Game::removeScene(int=" + std::to_string(
                                 index) + "): Scene not found");
         throw "Scene not found";
     }

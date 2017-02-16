@@ -1,6 +1,5 @@
 #include "CoreTest.h"
 
-#include "Core.h"
 
 TEST_F(CoreTest, initSetupQuitAndGetter)
 {

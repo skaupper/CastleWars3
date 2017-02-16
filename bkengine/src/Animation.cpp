@@ -1,11 +1,9 @@
-/// @Author B�hmi
-
-#include <iostream>
-
 #include "Animation.h"
 
+using namespace bkengine;
 
-Animation::Animation(const std::string &description, unsigned int framesPerTexture) :
+Animation::Animation(const std::string &description,
+                     unsigned int framesPerTexture) :
     frameCounter(0),
     framesPerTexture(framesPerTexture),
     currentIndex(0),
@@ -61,7 +59,7 @@ void Animation::addImage(const std::string &path)
     addImage<Texture>(path);
 }
 
-void Animation::addImage(const std::string &path, SDL_Rect size)
+void Animation::addImage(const std::string &path, Rect size)
 {
     addImage<Texture>(path, size);
 }

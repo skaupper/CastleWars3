@@ -87,6 +87,6 @@ void Credits::resetLocations()
                               scene));
     cout << 336 * Core::getInstance()->WINDOW_WIDTH / 1600 << endl;
     scene->addElement(getImage("res/htl_logo.png", "htl logo",
-                               getRelativeLocation(58.85, offset + 120), new SDL_Rect{0, 0, 336 * Core::getInstance()->WINDOW_WIDTH / 1024, 229 * Core::getInstance()->WINDOW_HEIGHT / 768},
+                               getRelativeLocation(58.85, offset + 120), new Rect{0, 0, 336 * Core::getInstance()->WINDOW_WIDTH / 1024, 229 * Core::getInstance()->WINDOW_HEIGHT / 768},
                                scene));
 }

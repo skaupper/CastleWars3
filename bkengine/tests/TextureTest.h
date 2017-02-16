@@ -2,9 +2,14 @@
 #define TEXTURE_TEST_H
 
 #include "gtest/gtest.h"
-#include "SDLMock.h"
 
 #include "Texture.h"
+
+#include "SDLMock.h"
+
+
+using namespace bkengine;
+
 
 class TextureMock : public Texture
 {

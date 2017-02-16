@@ -1,5 +1,8 @@
 #include "SDLWrapper.h"
 
+using namespace bkengine_test;
+
+
 SDL SDL::instance;
 SDL *SDLProvider::instance = SDL::getInstance();
 

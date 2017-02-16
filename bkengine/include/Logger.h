@@ -7,37 +7,39 @@
 #include <time.h>
 #include <sstream>
 
-class Logger
+namespace bkengine
 {
-    public:
-        static std::string debug;
-        static std::string info;
-        static std::string warning;
-        static std::string critical;
-        static std::string error;
+    enum class LogLevel : unsigned int {
+        DEBUG = 0,
+        INFO = 1,
+        WARNING = 2,
+        ERROR = 3,
+        CRITICAL = 4
+    };
 
-        static bool stddebug;
-        static bool stdinfo;
-        static bool stdwarning;
-        static bool stdcritical;
-        static bool stderror;
+    class Logger
+    {
+        private:
+            static LogLevel logLevel;
+            static std::array<std::string, 5> logLevelStrings;
+            static std::string file;
+            static bool stdout;
 
-        static void SetupDebug(const std::string &path);
-        static void SetupInfo(const std::string &path);
-        static void SetupWarning(const std::string &path);
-        static void SetupError(const std::string &path);
-        static void SetupCritical(const std::string &path);
-        static void LogDebug(const std::string &text);
-        static void LogInfo(const std::string &text);
-        static void LogWarning(const std::string &text);
-        static void LogError(const std::string &text);
-        static void LogCritical(const std::string &text);
+        public:
+            static void UseStdout(bool useStdout = true);
+            static void UseFile(const std::string &path = "");
 
-        static void SetDebugStandardOut(bool b);
-        static void SetInfoStandardOut(bool b);
-        static void SetWarningStandardOut(bool b);
-        static void SetErrorStandardOut(bool b);
-        static void SetCriticalStandardOut(bool b);
-};
+            static void SetLevel(unsigned int logLevel);
+            static void SetLevel(const LogLevel &logLevel);
+
+            static void LogDebug(const std::string &text);
+            static void LogInfo(const std::string &text);
+            static void LogWarning(const std::string &text);
+            static void LogError(const std::string &text);
+            static void LogCritical(const std::string &text);
+            static void Log(const LogLevel &level, const std::string &text);
+            static void Log(unsigned int level, const std::string &text);
+    };
+}
 
 #endif

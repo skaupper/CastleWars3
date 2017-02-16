@@ -1,7 +1,7 @@
 #ifndef FORMSFUNCTIONS_H
 #define FORMSFUNCTIONS_H
 
-bool inRect(SDL_Rect *large, SDL_Rect *small)
+bool inRect(Rect *large, Rect *small)
 {
     return small->x > large->x && small->x + small->w < large->x + large->w
            && small->y > large->y && small->y + small->h < large->y + large->h;
@@ -24,13 +24,13 @@ Location getRelativeLocation(double percent_x, double percent_y)
     return { getPercentageWidth(percent_x), getPercentageHeight(percent_y) };
 }
 
-SDL_Rect getRelativeSize(double percent_x, double percent_y)
+Rect getRelativeSize(double percent_x, double percent_y)
 {
     return { 0, 0, getPercentageWidth(percent_x), getPercentageHeight(percent_y) };
 }
 
 Entity getImage(std::string path, std::string id, Location *location,
-                SDL_Rect *size,
+                Rect *size,
                 Scene *scene)
 {
     Animation animation(id, -1);
@@ -41,7 +41,7 @@ Entity getImage(std::string path, std::string id, Location *location,
 }
 
 Entity *getImage(const string path[], const string id, Location *location,
-                 SDL_Rect *size, Scene *scene)
+                 Rect *size, Scene *scene)
 {
     stringstream ss;
     Entity *element = new Entity(location, scene, id);

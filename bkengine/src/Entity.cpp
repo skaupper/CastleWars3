@@ -1,6 +1,9 @@
 #include "Entity.h"
 #include <iostream>
 
+using namespace bkengine;
+
+
 Entity::Entity(const Location &loc, std::shared_ptr<Scene> parentScene,
                const std::string &descr, bool isCollidable) :
     Element(loc, descr, isCollidable), parentScene(parentScene)

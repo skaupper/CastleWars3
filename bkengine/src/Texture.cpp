@@ -1,8 +1,8 @@
-///@author Kaupper
 
 #include "Texture.h"
-#include <iostream>
 #include <sstream>
+
+using namespace bkengine;
 
 
 std::map<std::string, std::shared_ptr<TextureWrapper>> Texture::imageCache;
@@ -53,9 +53,6 @@ Texture::Texture() : texture(NULL)
 
 Texture::~Texture()
 {
-    if (texture) {
-        Logger::LogDebug("Texture::~Texture");
-    }
 }
 
 int Texture::loadText(const std::string &text, const Color &color,
@@ -66,7 +63,7 @@ int Texture::loadText(const std::string &text, const Color &color,
         int w, h;
         texture = tex;
         MANGLE_SDL(SDL_QueryTexture)(tex->get(), NULL, NULL, &w, &h);
-        Texture::clip = Texture::size = { 0, 0, w, h };
+        Texture::clip = Texture::size = { 0, 0, (float) w, (float) h };
         return 0;
     }
 
@@ -95,13 +92,12 @@ int Texture::loadText(const std::string &text, const Color &color,
         return -2;
     }
 
-    Logger::LogDebug("Texture::Texture");
     MANGLE_SDL(SDL_FreeSurface)(textSurface);
     texture = std::make_shared<TextureWrapper>(nTexture);
     textCache[text][color][size] = texture;
     int w, h;
     MANGLE_SDL(SDL_QueryTexture)(texture->get(), NULL, NULL, &w, &h);
-    Texture::clip = Texture::size = { 0, 0, w, h };
+    Texture::clip = Texture::size = { 0, 0, (float) w, (float) h };
     return 0;
 }
 
@@ -112,7 +108,7 @@ int Texture::loadImage(const std::string &path)
         int w, h;
         texture = tex;
         MANGLE_SDL(SDL_QueryTexture)(tex->get(), NULL, NULL, &w, &h);
-        Texture::clip = Texture::size = { 0, 0, w, h };
+        Texture::clip = Texture::size = { 0, 0, (float) w, (float) h };
         return 0;
     }
 
@@ -131,15 +127,14 @@ int Texture::loadImage(const std::string &path)
         return -2;
     }
 
-    Logger::LogDebug("Texture::Texture");
-    clip = { 0, 0, loadedSurface->w, loadedSurface->h };
+    clip = { 0, 0, (float) loadedSurface->w, (float) loadedSurface->h };
     size = clip;
     MANGLE_SDL(SDL_FreeSurface)(loadedSurface);
     texture = imageCache[path] = std::make_shared<TextureWrapper>(nTexture);
     return 0;
 }
 
-int Texture::loadImage(const std::string &path, const SDL_Rect &clip)
+int Texture::loadImage(const std::string &path, const Rect &clip)
 {
     int status = loadImage(path);
     Texture::clip = clip;
@@ -147,8 +142,8 @@ int Texture::loadImage(const std::string &path, const SDL_Rect &clip)
     return status;
 }
 
-int Texture::loadImage(const std::string &path, const SDL_Rect &clip,
-                       const SDL_Rect &size)
+int Texture::loadImage(const std::string &path, const Rect &clip,
+                       const Rect &size)
 {
     int status = loadImage(path);
     Texture::clip = clip;
@@ -156,7 +151,7 @@ int Texture::loadImage(const std::string &path, const SDL_Rect &clip,
     return status;
 }
 
-SDL_Rect Texture::getSize()
+Rect Texture::getSize()
 {
     return size;
 }
@@ -164,15 +159,15 @@ SDL_Rect Texture::getSize()
 void Texture::setSize(int w, int h)
 {
     if (w != 0) {
-        size.w = w;
+        size.w = (float) w;
     }
 
     if (h != 0) {
-        size.h = h;
+        size.h = (float) h;
     }
 }
 
-void Texture::setSize(const SDL_Rect &rect)
+void Texture::setSize(const Rect &rect)
 {
     size = rect;
 }
@@ -181,15 +176,16 @@ int Texture::onRender(const Location &loc, bool flip)
 {
     SDL_Renderer *renderer = Core::getInstance()->getRenderer();
     SDL_Rect rect { (int) loc.x, (int) loc.y, (int) size.w, (int) size.h };
-    SDL_Point point { getSize().x / 2, 0 };
+    SDL_Rect sdlClip = clip.toSDLRect();
+    SDL_Point point { (int) getSize().x / 2, 0 };
     int ret;
 
     if (flip) {
-        ret = MANGLE_SDL(SDL_RenderCopyEx)(renderer, texture->get(), &clip, &rect, 0,
+        ret = MANGLE_SDL(SDL_RenderCopyEx)(renderer, texture->get(), &sdlClip, &rect, 0,
                                            &point,
                                            SDL_FLIP_HORIZONTAL);
     } else {
-        ret =  MANGLE_SDL(SDL_RenderCopy)(renderer, texture->get(), &clip, &rect);
+        ret =  MANGLE_SDL(SDL_RenderCopy)(renderer, texture->get(), &sdlClip, &rect);
     }
 
     return ret;

@@ -1,5 +1,8 @@
 #include "Logger.h"
 
+using namespace bkengine;
+
+
 static std::string GetTimeString()
 {
     time_t t = time(0);
@@ -16,109 +19,83 @@ static std::string GetTimeString()
     return ss.str();
 }
 
-static void Log(const std::string &level, bool printToStdOut,
-                const std::string &path, const std::string &text)
+LogLevel Logger::logLevel = LogLevel::DEBUG;
+std::array<std::string, 5> Logger::logLevelStrings = {"DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"};
+std::string Logger::file = "";
+bool Logger::stdout = true;
+
+void Logger::UseStdout(bool b)
 {
-    static std::mutex mutex;
-    mutex.lock();
-    std::stringstream textstream;
-    textstream << GetTimeString() << "\t[" << level  << "]\t" << text << std::endl;
-
-    if (!path.empty()) {
-        std::ofstream stream;
-        stream.open(path, std::ofstream::out | std::ofstream::app);
-        stream << textstream.str();
-        stream.close();
-    }
-
-    if (printToStdOut) {
-        std::cout << textstream.str();
-    }
-
-    mutex.unlock();
+    stdout = b;
 }
 
-std::string Logger::debug = "";
-std::string Logger::info = "";
-std::string Logger::warning = "";
-std::string Logger::error = "";
-std::string Logger::critical = "";
-
-bool Logger::stddebug = true;
-bool Logger::stdinfo = true;
-bool Logger::stdwarning = true;
-bool Logger::stderror = true;
-bool Logger::stdcritical = true;
-
-void Logger::SetDebugStandardOut(bool b)
+void Logger::UseFile(const std::string &path)
 {
-    stddebug = b;
-}
-void Logger::SetInfoStandardOut(bool b)
-{
-    stdinfo = b;
-}
-void Logger::SetWarningStandardOut(bool b)
-{
-    stdwarning = b;
-}
-void Logger::SetErrorStandardOut(bool b)
-{
-    stderror = b;
-}
-void Logger::SetCriticalStandardOut(bool b)
-{
-    stdcritical = b;
+    file = path;
 }
 
-void Logger::SetupDebug(const std::string &path)
+void Logger::SetLevel(unsigned int logLevel)
 {
-    debug = path;
+    Logger::logLevel = (LogLevel) logLevel;
 }
 
-void Logger::SetupInfo(const std::string &path)
+void Logger::SetLevel(const LogLevel &logLevel)
 {
-    info = path;
-}
-
-void Logger::SetupWarning(const std::string &path)
-{
-    warning = path;
-}
-
-void Logger::SetupError(const std::string &path)
-{
-    error = path;
-}
-
-void Logger::SetupCritical(const std::string &path)
-{
-    critical = path;
+    Logger::logLevel = logLevel;
 }
 
 void Logger::LogDebug(const std::string &text)
 {
-#ifdef DEBUG
-    Log("DEBUG", stddebug, debug, text);
-#endif
+    Log((int) LogLevel::DEBUG, text);
 }
 
 void Logger::LogInfo(const std::string &text)
 {
-    Log("INFO", stdinfo, info, text);
+    Log((int) LogLevel::INFO, text);
 }
 
 void Logger::LogWarning(const std::string &text)
 {
-    Log("WARNING", stdwarning, warning, text);
+    Log((int) LogLevel::WARNING, text);
 }
 
 void Logger::LogError(const std::string &text)
 {
-    Log("ERROR", stderror, error, text);
+    Log((int) LogLevel::ERROR, text);
 }
 
 void Logger::LogCritical(const std::string &text)
 {
-    Log("CRITICAL", stdcritical, critical, text);
+    Log((int) LogLevel::CRITICAL, text);
+}
+
+void Logger::Log(const LogLevel &level, const std::string &text)
+{
+    Log((int) level, text);
+}
+
+void Logger::Log(unsigned int level, const std::string &text)
+{
+    if (level < (int) logLevel) {
+        return;
+    }
+
+    static std::mutex mutex;
+    mutex.lock();
+    std::stringstream textstream;
+    textstream << GetTimeString() << " [" << logLevelStrings[level]  << "] " <<
+               text << std::endl;
+
+    if (!file.empty()) {
+        std::ofstream stream;
+        stream.open(file, std::ofstream::out | std::ofstream::app);
+        stream << textstream.str();
+        stream.close();
+    }
+
+    if (stdout) {
+        std::cout << textstream.str();
+    }
+
+    mutex.unlock();
 }

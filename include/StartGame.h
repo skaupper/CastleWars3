@@ -16,7 +16,7 @@
 Scene *glscene;
 
 
-SDL_Rect *gamemap;
+Rect *gamemap;
 
 bool player1Cheat = false;
 bool player2Cheat = false;

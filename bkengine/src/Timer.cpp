@@ -1,6 +1,7 @@
-///@author Kaupper
-
 #include "Timer.h"
+
+using namespace bkengine;
+
 
 Timer::Timer()
 {

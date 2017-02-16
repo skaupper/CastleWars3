@@ -1,15 +1,11 @@
 #ifndef SDL_MOCK_H
 #define SDL_MOCK_H
 
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
 #include "gmock/gmock.h"
 #include "SDLWrapper.h"
 
 using namespace ::testing;
+using namespace bkengine_test;
 
 class SDLMock : public SDL
 {

@@ -1,10 +1,10 @@
-///@author Kaupper
-
 #include <iostream>
 
 #include "Core.h"
 #include "Game.h"
 #include "Scene.h"
+
+using namespace bkengine;
 
 class TestScene : public Scene
 {
@@ -23,11 +23,8 @@ class TestScene : public Scene
 
 int main(int argc, char *argv[])
 {
-    // Logger::SetDebugStandardOut(false);
-    // Logger::SetInfoStandardOut(false);
-    // Logger::SetWarningStandardOut(false);
-    // Logger::SetErrorStandardOut(false);
-    // Logger::SetCriticalStandardOut(false);
+    Logger::UseStdout(true);
+    Logger::SetLevel(0);
     Core::init();
 
     try {

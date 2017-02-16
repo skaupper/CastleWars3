@@ -6,7 +6,7 @@
 #include <time.h>
 #include <stdlib.h>
 
-extern SDL_Rect *gamemap;
+extern Rect *gamemap;
 void (*func)(Entity *);
 
 int objectOnLoop(Scene *scene)
@@ -30,8 +30,8 @@ void getNewObject(Scene *scene)
 {
     bool added = true;
     int s = 5;
-    SDL_Rect *size = getRelativeSize(s, s * getRelativeSize(100,
-                                     0)->w / getRelativeSize(0, 100)->h);
+    Rect *size = getRelativeSize(s, s * getRelativeSize(100,
+                                 0)->w / getRelativeSize(0, 100)->h);
     Entity *e;
     Animation *a;
 

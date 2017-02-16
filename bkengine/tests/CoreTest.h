@@ -2,7 +2,14 @@
 #define CORE_TEST_H
 
 #include "gtest/gtest.h"
+
+#include "Core.h"
+
 #include "SDLMock.h"
+
+
+using namespace bkengine;
+
 
 class CoreTest : public ::testing::Test
 {

@@ -1,11 +1,14 @@
 #include "Element.h"
 
+using namespace bkengine;
+
+
 Element::Element(const std::string &description, const Location &loc,
                  bool isCollidable) :
-     description(description),
-     location(loc),
-     flipped(false),
-     frame(0),
+    description(description),
+    location(loc),
+    flipped(false),
+    frame(0),
     isCollidable(isCollidable),
     currentAnimation(-1)
 {
@@ -76,7 +79,7 @@ void Element::removeAnimation(const std::string &name)
         index++;
     }
 
-    Logger::LogCritical("Element::removeAnimation(const std::string & = " + name +
+    Logger::LogCritical("Element::removeAnimation(const std::string &=" + name +
                         "): Animation not found");
     throw "Animation not found";
 }
@@ -86,7 +89,7 @@ void Element::removeAnimation(unsigned int index)
     if (index < animations.size()) {
         animations.erase(animations.begin() + index);
     } else {
-        Logger::LogCritical("Element::removeAnimation(int = " + std::to_string(
+        Logger::LogCritical("Element::removeAnimation(int=" + std::to_string(
                                 index) + "): Animation not found");
         throw "Animation not found";
     }

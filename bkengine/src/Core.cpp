@@ -1,9 +1,8 @@
-///@author Kaupper
-
 #include "Core.h"
-#include <iostream>
 
-//singleton
+using namespace bkengine;
+
+
 Core *Core::instance = NULL;
 bool Core::depsInited = false;
 
@@ -253,5 +252,6 @@ TTF_Font *Core::getFont(FontSize size)
         case FontSize::LARGE:
             return largeFont;
     }
+
     return NULL;
 }

@@ -4,9 +4,9 @@
 #include "Player.h"
 #include <sstream>
 
-extern SDL_Rect *gamemap;
+extern Rect *gamemap;
 
-bool inRectBullet(SDL_Rect *large, SDL_Rect *small)
+bool inRectBullet(Rect *large, Rect *small)
 {
     return small->x > large->x && small->x + small->w < large->x + large->w
            && small->y > large->y && small->y + small->h < large->y + large->h;
@@ -29,9 +29,9 @@ Location *getRelativeLocationBullet(double percent_x, double percent_y)
     return new Location{getPercentageWidthBullet(percent_x), getPercentageHeightBullet(percent_y)};
 }
 
-SDL_Rect *getRelativeSizeBullet(double percent_x, double percent_y)
+Rect *getRelativeSizeBullet(double percent_x, double percent_y)
 {
-    return new SDL_Rect{0, 0, getPercentageWidthBullet(percent_x), getPercentageHeightBullet(percent_y)};
+    return new Rect{0, 0, getPercentageWidthBullet(percent_x), getPercentageHeightBullet(percent_y)};
 }
 
 bool contains(string s1, string s2)
@@ -80,7 +80,7 @@ int projectileOnLoop(Element *ele)
     for (int i = 0; i < me->parentScene->countElements(); i++) {
         Element *tmp = me->parentScene->getElement(i);
 
-        if (!inRectBullet(gamemap, new SDL_Rect{me->location->x, me->location->y, me->collisionRect->w, me->collisionRect->h})
+        if (!inRectBullet(gamemap, new Rect{me->location->x, me->location->y, me->collisionRect->w, me->collisionRect->h})
                 || (tmp->descr != "player 1 death count"
                     && tmp->descr != "player 2 death count" && tmp->descr != "box"
                     && me->collidesWith(tmp) && tmp->descr != "background"
@@ -96,7 +96,7 @@ int projectileOnLoop(Element *ele)
 
             ((Weapon *)ele)->shooting = false;
             ((Weapon *)ele)->projectileTemplate->clear();
-            delete ((Weapon *)ele)->projectileTemplate;
+            delete((Weapon *)ele)->projectileTemplate;
             ((Weapon *)ele)->projectileTemplate = NULL;
             break;
         }
@@ -124,7 +124,7 @@ void Weapon::setupProjectilesList()
     //projectiles = new vector<Entity>();
 }
 
-void Weapon::setProjectileTemplate(string imagepath, SDL_Rect *imageSize)
+void Weapon::setProjectileTemplate(string imagepath, Rect *imageSize)
 {
     projectileTemplate = new Entity(location, parentScene, "projectile", true);
     Animation *projectileAnimation = new Animation("projectile", -1);
