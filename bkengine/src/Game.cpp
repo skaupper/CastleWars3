@@ -115,7 +115,6 @@ int Game::run()
 
             status = onEvent(&event);
 
-            // TODO: introduce codes
             if (status != 0) {
                 running = false;
                 break;
@@ -146,10 +145,8 @@ void Game::onLoop()
 
 int Game::onEvent(SDL_Event *event)
 {
-    int status = 0;
-
     if (activeScene > -1) {
-        status = getCurrentScene<Scene>().onEvent(event);
+        int status = getCurrentScene<Scene>().onEvent(event);
 
         if (status != 0) {
             return status;

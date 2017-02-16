@@ -16,7 +16,7 @@ class CoreTest : public ::testing::Test
     public:
         SDLMock *mock;
 
-        CoreTest()
+        CoreTest() : mock(nullptr)
         {
         }
 

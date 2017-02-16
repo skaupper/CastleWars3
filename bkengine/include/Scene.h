@@ -16,7 +16,7 @@ namespace bkengine
     class Scene
     {
         public:
-            Scene(const std::string &name = "");
+            explicit Scene(const std::string &name = "");
             Scene(Scene &&scene);
             Scene &operator=(Scene &&scene);
             virtual ~Scene();

@@ -38,7 +38,7 @@ namespace bkengine
     class TextureWrapper
     {
         public:
-            TextureWrapper(SDL_Texture *tex);
+            explicit TextureWrapper(SDL_Texture *tex);
             virtual ~TextureWrapper();
 
             SDL_Texture *get();

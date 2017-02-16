@@ -38,7 +38,7 @@ class TextureTest : public ::testing::Test
     public:
         SDLMock *mock;
 
-        TextureTest()
+        TextureTest() : mock(nullptr)
         {
         }
 

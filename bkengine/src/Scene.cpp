@@ -87,10 +87,8 @@ void Scene::onLoop()
 
 int Scene::onEvent(SDL_Event *event)
 {
-    int status = 0;
-
     for (auto &element : elements) {
-        status = element->onEvent(event);
+        int status = element->onEvent(event);
 
         if (status != 0) {
             return status;

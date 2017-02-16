@@ -46,9 +46,8 @@ bool Texture::hasTextureCached(const std::string &s, const Color &c, short size)
     return true;
 }
 
-Texture::Texture() : texture(NULL)
+Texture::Texture() : flip(false), texture(NULL), clip(), size()
 {
-    flip = false;
 }
 
 Texture::~Texture()
@@ -83,10 +82,9 @@ int Texture::loadText(const std::string &text, const Color &color,
         return -1;
     }
 
-    SDL_Texture *nTexture = NULL;
-    nTexture = MANGLE_SDL(SDL_CreateTextureFromSurface)
-               (Core::getInstance()->getRenderer(),
-                textSurface);
+    SDL_Texture *nTexture = MANGLE_SDL(SDL_CreateTextureFromSurface)
+                            (Core::getInstance()->getRenderer(),
+                             textSurface);
 
     if (nTexture == NULL) {
         return -2;
