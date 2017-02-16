@@ -76,7 +76,7 @@ void Logger::Log(const LogLevel &level, const std::string &text)
 
 void Logger::Log(unsigned int level, const std::string &text)
 {
-    if (level < (int) logLevel) {
+    if (level < (unsigned int) logLevel) {
         return;
     }
 
