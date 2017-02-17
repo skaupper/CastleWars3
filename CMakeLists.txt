@@ -5,15 +5,43 @@ OPTION (ENABLE_TESTS "Set to TRUE if you want to run the testcases afterwards" F
 SET (GMOCK_SOURCE "/usr/src/gmock/gmock-all.cc" CACHE STRING "Path to the gmock-all.cc")
 SET (GMOCK_LIBS "" CACHE STRING "Path to the GMock libs")
 
+SET (CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 SET (CMAKE_CXX_STANDARD 14)
 
-ADD_SUBDIRECTORY (bkengine)
+INCLUDE (ExternalProject)
+EXTERNALPROJECT_ADD(project_bkengine
+  GIT_REPOSITORY http://github.org/kaupper/BKEngine.git
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/bkengine
+  CMAKE_ARGS -DENABLE_TESTS=${ENABLE_TESTS} -DGMOCK_SOURCE=${GMOCK_SOURCE} -DGMOCK_LIBS=${GMOCK_LIBS}
+  INSTALL_COMMAND ""
+)
+
+FIND_PACKAGE (SDL2 REQUIRED)
+FIND_PACKAGE (SDL2_image REQUIRED)
+FIND_PACKAGE (SDL2_ttf REQUIRED)
+FIND_PACKAGE (SDL2_mixer REQUIRED)
+
+INCLUDE_DIRECTORIES (${SDL2_INCLUDE_DIR}
+                     ${SDL2_IMAGE_INCLUDE_DIR}
+                     ${SDL2_TTF_INCLUDE_DIR}
+                     ${SDL2_MIXER_INCLUDE_DIRS})
+
+SET (SDL_LIBS ${SDL2_LIBRARY}
+              ${SDL2_IMAGE_LIBRARIES}
+              ${SDL2_TTF_LIBRARIES}
+              ${SDL2_MIXER_LIBRARIES})
+
+INCLUDE_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR}/bkengine/src/project_bkengine/include)
+LINK_DIRECTORIES (${CMAKE_CURRENT_BINARY_DIR}/bkengine/src/project_bkengine-build)
 
 SET(SOURCES src/main.cpp)
 
+MESSAGE (STATUS ${CMAKE_CURRENT_BINARY_DIR}/bkengine/include)
+
 # compile executable
 ADD_EXECUTABLE(CastleWars ${SOURCES})
-TARGET_LINK_LIBRARIES (CastleWars bkengine)
+TARGET_LINK_LIBRARIES (CastleWars ${SDL_LIBS} bkengine)
+TARGET_INCLUDE_DIRECTORIES (CastleWars PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/bkengine/include)
 
 # install target
 SET (CMAKE_INSTALL_PREFIX ${CastleWars_SOURCE_DIR})
