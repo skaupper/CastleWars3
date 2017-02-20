@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "Core.h"
-#include "Game.h"
-#include "Scene.h"
+#include <bkengine/Core.h>
+#include <bkengine/Game.h>
+#include <bkengine/Scene.h>
 
 using namespace bkengine;
 
@@ -28,40 +28,13 @@ int main(int argc, char *argv[])
     Core::init();
 
     try {
+        Fonts::registerFont("Meath.ttf", 30, "meath");
         Game game(1024, 768, "TestWindow");
         TestScene &scene = game.addScene<TestScene>("scene1");
         Element &element = scene.addElement<Element>("testelement");
         Animation &animation = element.addAnimation<Animation>("testanimation", 60);
         animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
-        animation.addImage("jo.png");
-        animation.addText("DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, 30);
+        animation.addText("meath", "DAS IST DER JO!", {0xFF, 0x00, 0x00, 0xFF}, {800, 100}, TextQuality::BLENDED);
         game.run();
     } catch (const char *s) {
         Logger::LogCritical(s);
