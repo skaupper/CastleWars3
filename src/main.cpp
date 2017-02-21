@@ -11,11 +11,11 @@ class TestScene : public Scene
 {
     public:
         TestScene(const std::string &name) : Scene(name) {}
-        virtual int onEvent(SDL_Event *event)
+        virtual bool onEvent(SDL_Event *event)
         {
             if (event->type == SDL_MOUSEBUTTONDOWN
                     && ((SDL_MouseButtonEvent *)event)->button == SDL_BUTTON_LEFT) {
-                return 1;
+                return false;
             }
 
             return Scene::onEvent(event);
@@ -35,7 +35,7 @@ class TestEntity : public Entity
             move(0.1 * direction, 0);
         }
 
-        virtual int onEvent(SDL_Event *event)
+        virtual bool onEvent(SDL_Event *event)
         {
             if (event->type == SDL_KEYDOWN) {
                 SDL_KeyboardEvent *kb = (SDL_KeyboardEvent *) event;
@@ -59,7 +59,7 @@ class TestEntity : public Entity
                     once = true;
                 }
             }
-            return 0;
+            return true;
         }
 };
 
@@ -68,21 +68,18 @@ int main(int argc, char *argv[])
     Logger::UseStdout(true);
     Logger::SetLevel(0);
 
-    try {
-        Fonts::registerFont("Meath.ttf", 30, "meath");
-        Game game(1024, 768, "TestWindow");
-        game.setIcon("icon.ico");
-        TestScene &scene = game.addScene<TestScene>("scene1");
-        TestEntity &entity1 = scene.addElement<TestEntity>("1", Rect(0, 0, 20, 50), 1);
-        entity1.setId(1);
-        TestEntity &entity2 = scene.addElement<TestEntity>("2", Rect(80, 50, 20, 50), 1);
-        entity2.setId(2);
-        entity1.addAnimation<Animation>().addTexture(Texture("jo.png", Rect(100, 100)));
-        entity2.addAnimation<Animation>().addTexture(Texture("jo.png", Rect(100, 100)));
-        game.run();
-    } catch (const char *s) {
-        Logger::LogCritical(s);
-    }
+    Fonts::registerFont("Meath.ttf", 30, "meath");
+    Game game(1024, 768, "TestWindow");
+    game.setIcon("icon.ico");
+    TestScene &scene = game.addScene<TestScene>("scene1");
+    TestEntity &entity1 = scene.addElement<TestEntity>("1", Rect(0, 0, 20, 50), 1);
+    entity1.setId(1);
+    TestEntity &entity2 = scene.addElement<TestEntity>("2", Rect(80, 50, 20, 50), 1);
+    entity2.setId(2);
+    entity2.applyCollisionBox({50, 0, 50, 100});
+    entity1.addAnimation<Animation>().addTexture(Texture("jo.png", Rect(100, 100)));
+    entity2.addAnimation<Animation>().addTexture(Texture("jo.png", Rect(100, 100)));
+    game.run();
 
     Core::quit();
     return 0;
