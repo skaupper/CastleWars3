@@ -11,11 +11,12 @@
 
 using namespace bkengine;
 
-/*
+
 class TestScene : public Scene
 {
     public:
-        TestScene(const std::string &name) : Scene(name) {}
+        using Scene::Scene;
+
         virtual bool onEvent(const Event &event)
         {
             if (event.type == EventType::MOUSE && event.mouse.button == Buttons::LEFT) {
@@ -24,13 +25,23 @@ class TestScene : public Scene
             }
             return Scene::onEvent(event);
         }
+
+        virtual void onLoop() override
+        {
+            auto settings = parentGame->getSettingsInterface();
+            settings->loadFromFile("test.ini");
+            Logger::LogDebug(settings->getValue("TestSection.testkey"));
+            settings->saveToFile("test.ini");
+            parentGame->stop();
+            return;
+        }   
 };
 
 class TestEntity : public Entity
 {
     public:
-        explicit TestEntity(Scene *parentScene, const std::string &descr = "", const Rect &renderBox = Rect(),
-                            int collisionLayer = -1) : Entity(parentScene, descr, renderBox, collisionLayer) {}
+        using Entity::Entity;
+
         int direction = 0;
         int id = 0;
         void setId(int id) { this->id = id; }
@@ -67,19 +78,21 @@ class TestEntity : public Entity
             return true;
         }
 };
-*/
+
 
 int main(int argc, char *argv[])
 {
     Logger::UseStdout(true);
     Logger::SetLevel(0);
 
-    Fonts::registerFont("Meath.ttf", 30, "meath");
-    Fonts::registerFont("FUTURAB.ttf", 30, "futurab");
+    //Fonts::registerFont("Meath.ttf", 30, "meath");
+    //Fonts::registerFont("FUTURAB.ttf", 30, "futurab");
     Game game(1024, 768, "TestWindow");
-    game.setIcon("icon.ico");
-    game.addScene<MainMenu>("mainmenu");
-    game.addScene<Credits>("credits");
+    game.addScene<TestScene>();
+    //game.setIcon("icon.ico");
+    //game.addScene<MainMenu>("mainmenu");
+    //game.addScene<Credits>("credits");
+    
     /*
     TestScene &scene = game.addScene<TestScene>("scene1");
     TestEntity &entity1 = scene.addElement<TestEntity>("1", Rect(0, 0, 20, 50), 1);
