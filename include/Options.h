@@ -8,7 +8,6 @@
 #include <iostream>
 
 #include "Game.h"
-#include "FormsFunctions.h"
 
 struct Resolution {
     int width;

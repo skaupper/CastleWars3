@@ -13,7 +13,8 @@ FIND_PACKAGE (SDL2_image REQUIRED)
 FIND_PACKAGE (SDL2_ttf REQUIRED)
 FIND_PACKAGE (SDL2_mixer REQUIRED)
 
-INCLUDE_DIRECTORIES (${SDL2_INCLUDE_DIR}
+INCLUDE_DIRECTORIES (include/
+                     ${SDL2_INCLUDE_DIR}
                      ${SDL2_IMAGE_INCLUDE_DIR}
                      ${SDL2_TTF_INCLUDE_DIR}
                      ${SDL2_MIXER_INCLUDE_DIRS})
@@ -23,7 +24,9 @@ SET (SDL_LIBS ${SDL2_LIBRARY}
               ${SDL2_TTF_LIBRARIES}
               ${SDL2_MIXER_LIBRARIES})
 
-SET(SOURCES src/main.cpp)
+SET(SOURCES src/main.cpp
+            src/Credits.cpp
+            src/MainMenu.cpp)
 
 # compile executable
 ADD_EXECUTABLE(CastleWars ${SOURCES})

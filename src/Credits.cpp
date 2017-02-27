@@ -1,92 +1,81 @@
 #include "Credits.h"
 
-Credits::Credits(Game *g) : Scene(2, "credits", g)
-{
-    resetLocations(scene);
-}
+using namespace bkengine;
 
-int Credits::onEvent(SDL_Event *event)
+
+bool Credits::onEvent(const Event &event)
 {
-    if (event->type == SDL_KEYDOWN) {
-        if (event->key.keysym.sym == SDLK_ESCAPE) {
-            resetLocations(scene);
-            scene->game->setActiveScene("mainmenu");
+    if (event.type == EventType::KEYBOARD) {
+        if (event.keyboard.key == Keys::ESCAPE) {
+            resetLocations();
+            parentGame->activate("mainmenu");
         }
     }
 
-    return 0;
+    return true;
 }
 
-int Credits::onLoop()
+void Credits::onLoop()
 {
-    static int ticks = 0;
+    static bool move = true;
 
-    if (ticks % 1 == 0)
-        //if(false)
-    {
-        ((Entity &)(getElement("lead developers"))).move(0, -1);
-        ((Entity &)(getElement("lead developer sebastian kaupper"))).move(0,
-                -1);
-        ((Entity &)(getElement("lead developer christoph boehmwalder"))).move(0,
-                -1);
-        ((Entity &)(getElement("designers"))).move(0, -1);
-        ((Entity &)(getElement("designer michael berthold"))).move(0, -1);
-        ((Entity &)(getElement("designer dominik hauer"))).move(0, -1);
-        ((Entity &)(getElement("special thanks"))).move(0, -1);
-        ((Entity &)(getElement("special thanks stephan wieninger"))).move(0,
-                -1);
-        ((Entity &)(getElement("htl logo"))).move(0, -1);
+    if (elements.size() == 0) {
+        createElements();
     }
 
-    ticks++;
-
-    if (((Entity *)(scene->getElement("htl logo")))->getLocation()->y < -200) {
-        ticks = 0;
-        resetLocations(scene);
-        scene->game->setActiveScene("mainmenu");
+    if (move) {
+        getElement<Entity>("lead developers").move(0, -0.075);
+        getElement<Entity>("lead developer sebastian kaupper").move(0, -0.075);
+        getElement<Entity>("lead developer christoph boehmwalder").move(0, -0.075);
+        getElement<Entity>("designers").move(0, -0.075);
+        getElement<Entity>("designer michael berthold").move(0, -0.075);
+        getElement<Entity>("designer dominik hauer").move(0, -0.075);
+        getElement<Entity>("special thanks").move(0, -0.075);
+        getElement<Entity>("special thanks stephan wieninger").move(0, -0.075);
+        getElement<Entity>("htl logo").move(0, -0.075);
     }
 
-    return 0;
+    if (getElement<Entity>("lead developers").getRenderBox().y <= 5) {
+        move = false;
+    }
 }
 
+
+void Credits::createElements()
+{
+    addElement<Entity>("background", Rect { 0.f, 0.f, 100, 100 })
+        .addAnimation<Animation>().addTexture(Texture("credits_bg.png"));
+
+    addElement<Entity>("lead developers", Rect { 50, 105, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Developers", Rect { 0, 5.5 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("lead developer sebastian kaupper", Rect { 50, 111, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Sebastian Kaupper", Rect { 0, 4 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("lead developer christoph boehmwalder", Rect { 50, 116, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Christoph Böhmwalder", Rect { 0, 4 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("designers", Rect { 50, 130, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Graphic Designers", Rect { 0, 5.5 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("designer michael berthold", Rect { 50, 137, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Michael Berthold", Rect { 0, 4 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("designer dominik hauer", Rect { 50, 142, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Dominik Hauer", Rect { 0, 4 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("special thanks", Rect { 50, 155, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Special thanks to", Rect { 0, 5.5 }, Color(), TextQuality::BLENDED));
+    addElement<Entity>("special thanks stephan wieninger", Rect { 50, 161, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("futurab", "Stephan Wieninger", Rect { 0, 4 }, Color(), TextQuality::BLENDED));
+
+    addElement<Entity>("htl logo", Rect { 50, 180, 0, 0 })
+        .addAnimation<Animation>().addTexture(Texture("htl_logo.png", Rect { 20, 0 }));
+}
 
 void Credits::resetLocations()
 {
-    //scene->clear();
-    scene->removeElement("background");
-    scene->removeElement("lead developers");
-    scene->removeElement("lead developer sebastian kaupper");
-    scene->removeElement("lead developer christoph boehmwalder");
-    scene->removeElement("designers");
-    scene->removeElement("designer michael berthold");
-    scene->removeElement("designer dominik hauer");
-    scene->removeElement("special thanks");
-    scene->removeElement("special thanks stephan wieninger");
-    scene->removeElement("htl logo");
-    scene->addElement(getImage("res/credits_bg.png", "background",
-                               getRelativeLocation(0, 0), getRelativeSize(100, 100), scene)); // Background
-    int offset = 100; // Debug
-    scene->addElement(getText("Lead Developers", "lead developers",
-                              getRelativeLocation(69.35, offset + 5), -1, scene));
-    scene->addElement(getText("Sebastian Kaupper",
-                              "lead developer sebastian kaupper", getRelativeLocation(53.9, offset + 7.5), 0,
-                              scene));
-    scene->addElement(getText("Christoph B�hmwalder",
-                              "lead developer christoph boehmwalder", getRelativeLocation(48.7,
-                                      offset + 13.5), 0, scene));
-    scene->addElement(getText("Graphic Designers", "designers",
-                              getRelativeLocation(67.5, offset + 45), -1, scene));
-    scene->addElement(getText("Michael Berthold", "designer michael berthold",
-                              getRelativeLocation(56.4, offset + 47.5), 0, scene));
-    scene->addElement(getText("Dominik Hauer", "designer dominik hauer",
-                              getRelativeLocation(58.85, offset + 53.5), 0, scene));
-    scene->addElement(getText("Special thanks to", "special thanks",
-                              getRelativeLocation(68.4, offset + 85), -1, scene));
-    scene->addElement(getText("Stephan Wieninger",
-                              "special thanks stephan wieninger", getRelativeLocation(53.3, offset + 87.5), 0,
-                              scene));
-    cout << 336 * Core::getInstance()->WINDOW_WIDTH / 1600 << endl;
-    scene->addElement(getImage("res/htl_logo.png", "htl logo",
-                               getRelativeLocation(58.85, offset + 120), new Rect{0, 0, 336 * Core::getInstance()->WINDOW_WIDTH / 1024, 229 * Core::getInstance()->WINDOW_HEIGHT / 768},
-                               scene));
+    getElement<Element>("lead developers").setRenderBox({ 50, 105, 0, 0});
+    getElement<Element>("lead developer sebastian kaupper").setRenderBox({ 50, 111, 0, 0 });
+    getElement<Element>("lead developer christoph boehmwalder").setRenderBox({ 50, 116, 0, 0 });
+    getElement<Element>("designers").setRenderBox({ 50, 130, 0, 0 });
+    getElement<Element>("designer michael berthold").setRenderBox({ 50, 137, 0, 0 });
+    getElement<Element>("designer dominik hauer").setRenderBox({ 50, 142, 0, 0 });
+    getElement<Element>("special thanks").setRenderBox({ 50, 155, 0, 0 });
+    getElement<Element>("special thanks stephan wieninger").setRenderBox({ 50, 161, 0, 0 });
+    getElement<Element>("htl logo").setRenderBox({ 50, 180, 0, 0 });
 }
