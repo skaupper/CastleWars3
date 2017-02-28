@@ -4,14 +4,16 @@
 #include <bkengine/Game.h>
 #include <bkengine/Scene.h>
 
+#include "OptionStorage.h"
+
 
 class MainMenu : public bkengine::Scene
 {
-public:
-    using Scene::Scene;
+    public:
+        using Scene::Scene;
 
-    virtual void setup() override;
-    virtual bool onEvent(const bkengine::Event &) override;
+        virtual void setup() override;
+        virtual bool onEvent(const bkengine::Event &) override;
 };
 
 #endif // MAINMENU_H

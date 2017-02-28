@@ -25,8 +25,11 @@ SET (SDL_LIBS ${SDL2_LIBRARY}
               ${SDL2_MIXER_LIBRARIES})
 
 SET(SOURCES src/main.cpp
+            src/CastleWars.cpp
             src/Credits.cpp
-            src/MainMenu.cpp)
+            src/MainMenu.cpp
+            src/Options.cpp
+            src/OptionStorage.cpp)
 
 # compile executable
 ADD_EXECUTABLE(CastleWars ${SOURCES})
