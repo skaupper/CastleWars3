@@ -205,6 +205,7 @@ void Options::setup()
                                 textRect,
                                 Color(), TextQuality::BLENDED));
     getElement("options keyboard layout player 1 up button").activate(1);
+    Logger::LogCritical(getElement(0).getAnimation(0).getCurrentTexture().toString());
 }
 
 bool Options::onEvent(const Event &event)

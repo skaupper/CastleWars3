@@ -12,17 +12,20 @@ FIND_PACKAGE (SDL2 REQUIRED)
 FIND_PACKAGE (SDL2_image REQUIRED)
 FIND_PACKAGE (SDL2_ttf REQUIRED)
 FIND_PACKAGE (SDL2_mixer REQUIRED)
+FIND_PACKAGE (Jsoncpp REQUIRED)
 
 INCLUDE_DIRECTORIES (include/
                      ${SDL2_INCLUDE_DIR}
                      ${SDL2_IMAGE_INCLUDE_DIR}
                      ${SDL2_TTF_INCLUDE_DIR}
-                     ${SDL2_MIXER_INCLUDE_DIRS})
+                     ${SDL2_MIXER_INCLUDE_DIRS}
+                     ${JSONCPP_INCLUDE_DIRS})
 
-SET (SDL_LIBS ${SDL2_LIBRARY}
+SET (LIBS ${SDL2_LIBRARY}
               ${SDL2_IMAGE_LIBRARIES}
               ${SDL2_TTF_LIBRARIES}
-              ${SDL2_MIXER_LIBRARIES})
+              ${SDL2_MIXER_LIBRARIES}
+              ${JSONCPP_LIBRARIES})
 
 SET(SOURCES src/main.cpp
             src/CastleWars.cpp
@@ -33,7 +36,7 @@ SET(SOURCES src/main.cpp
 
 # compile executable
 ADD_EXECUTABLE(CastleWars ${SOURCES})
-TARGET_LINK_LIBRARIES (CastleWars ${SDL_LIBS} bkengine)
+TARGET_LINK_LIBRARIES (CastleWars ${LIBS} bkengine)
 
 # install target
 SET (CMAKE_INSTALL_PREFIX ${CastleWars_SOURCE_DIR})

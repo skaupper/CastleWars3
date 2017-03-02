@@ -65,20 +65,7 @@ void CastleWars::loadConfig()
 
 void CastleWars::setup()
 {
-    Logger::UseStdout(true);
-    Logger::SetLevel(0);
-    Fonts::registerFont("Meath.ttf", 0, "meath");
-    Fonts::registerFont("FUTURAB.ttf", 0, "futurab");
-    setIcon("icon.ico");
-    setSettingsInterface<INISettingsInterface>();
-    loadConfig();
-    Resolution resolution = getData<OptionStorage>("options").getResolution();
-    resizeWindow(resolution.w, resolution.h);
-    setWindowTitle("CastleWars3");
-
-    addScene<MainMenu>("mainmenu");
-    addScene<Credits>("credits");
-    addScene<Options>("options");
+  
 }
 
 void CastleWars::teardown()

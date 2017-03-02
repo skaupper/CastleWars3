@@ -15,13 +15,13 @@
 class CastleWars : public bkengine::Game
 {
     private:
-        void loadConfig();
 
     public:
         using Game::Game;
 
         virtual void setup() override;
         virtual void teardown() override;
+        void loadConfig();
 };
 
 #endif
