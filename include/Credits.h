@@ -12,8 +12,10 @@ class Credits : public bkengine::Scene
     public:
         using Scene::Scene;
 
-        virtual bool onEvent(const bkengine::Event &event);
-        virtual void onLoop();
+        virtual bool onEvent(const bkengine::Event &event) override;
+        virtual void onLoop() override;
+        virtual void setupElements() override;
+        virtual Json::Value serialize() const override;
 
     private:
         void createElements();

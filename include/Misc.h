@@ -4,10 +4,10 @@
 #include <bkengine/Keys.h>
 
 struct KeyboardLayout {
-    bkengine::Keys up;
-    bkengine::Keys left;
-    bkengine::Keys right;
-    bkengine::Keys action;
+    bkengine::Key up;
+    bkengine::Key left;
+    bkengine::Key right;
+    bkengine::Key action;
 };
 
 struct Resolution {

@@ -12,8 +12,9 @@ class MainMenu : public bkengine::Scene
     public:
         using Scene::Scene;
 
-        virtual void setup() override;
+        virtual void setupElements() override;
         virtual bool onEvent(const bkengine::Event &) override;
+        virtual Json::Value serialize() const override;
 };
 
 #endif // MAINMENU_H

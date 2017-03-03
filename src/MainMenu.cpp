@@ -4,7 +4,7 @@
 using namespace bkengine;
 
 
-void MainMenu::setup()
+void MainMenu::setupElements()
 {
     addElement<Element>("background").addAnimation<Animation>().addTexture(
         Texture("bg.png"));
@@ -37,7 +37,7 @@ bool MainMenu::onEvent(const Event &event)
 
     if (event.type == EventType::KEYBOARD
             && event.keyboard.state == KeyState::DOWN) {
-        Keys key = event.keyboard.key;
+        Key key = event.keyboard.key;
 
         if (key == options.player1.right || key == options.player2.right) {
             selectedChanged = true;
@@ -59,4 +59,12 @@ bool MainMenu::onEvent(const Event &event)
     }
 
     return true;
+}
+
+
+Json::Value MainMenu::serialize() const
+{
+    auto json = Scene::serialize();
+    json["type"] = "MAINMENU";
+    return json;
 }

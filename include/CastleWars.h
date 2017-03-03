@@ -4,6 +4,7 @@
 #include <bkengine/Game.h>
 #include <bkengine/Fonts.h>
 #include <bkengine/Logger.h>
+#include <bkengine/SDLEventInterface.h>
 #include <bkengine/INISettingsInterface.h>
 
 #include "OptionStorage.h"
@@ -19,8 +20,10 @@ class CastleWars : public bkengine::Game
     public:
         using Game::Game;
 
-        virtual void setup() override;
+        virtual void setupEnvironment() override;
+        virtual void setupScenes() override;
         virtual void teardown() override;
+        virtual Json::Value serialize() const override;
         void loadConfig();
 };
 

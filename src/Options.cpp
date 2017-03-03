@@ -2,12 +2,12 @@
 
 using namespace bkengine;
 
-static bool contains(const KeyboardLayout &layout, const Keys &key)
+static bool contains(const KeyboardLayout &layout, const Key &key)
 {
     return layout.up == key || layout.left == key || layout.right == key || layout.action == key;
 }
 
-void Options::setup()
+void Options::setupElements()
 {
     auto options = parentGame->getData<OptionStorage>("options");
     KeyboardLayout layouts[2] = { options.player1, options.player2 };
@@ -240,7 +240,7 @@ bool Options::onEvent(const Event &event)
 
     bool selectedChanged = false;
     if (event.type == EventType::KEYBOARD && event.keyboard.state == KeyState::DOWN) {
-        Keys key = event.keyboard.key;
+        Key key = event.keyboard.key;
 
         if (pressed) {
             if (key != Keys::UNKNOWN && !contains(options.player1, key)
@@ -325,4 +325,11 @@ bool Options::onEvent(const Event &event)
     }
 
     return true;
+}
+
+Json::Value Options::serialize() const
+{
+    auto json = Scene::serialize();
+    json["type"] = "OPTIONS";
+    return json;
 }

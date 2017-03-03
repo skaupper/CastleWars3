@@ -15,8 +15,9 @@ class Options : public bkengine::Scene
     public:
         using Scene::Scene;
 
-        virtual void setup() override;
+        virtual void setupElements() override;
         virtual bool onEvent(const bkengine::Event &event) override;
+        virtual Json::Value serialize() const override;
 };
 
 #endif // OPTIONS_H

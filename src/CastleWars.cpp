@@ -5,8 +5,9 @@ using namespace bkengine;
 
 void CastleWars::loadConfig()
 {
-    settingsInterface->loadFromFile("config.ini");
     auto &options = addData<OptionStorage>("options");
+    Logger::LogDebug("load config");
+    settingsInterface->loadFromFile("config.ini");
 
     if (settingsInterface->hasValue("Player1.up")) {
         options.player1.up = settingsInterface->get("Player1.up");
@@ -63,9 +64,27 @@ void CastleWars::loadConfig()
     }
 }
 
-void CastleWars::setup()
+void CastleWars::setupEnvironment()
 {
-  
+    Logger::UseStdout(true);
+    Logger::SetLevel(0);
+    Logger::LogDebug("setup environment");
+    Fonts::registerFont("Meath.ttf", 0, "meath");
+    Fonts::registerFont("FUTURAB.ttf", 0, "futurab");
+    setIcon("icon.ico");
+    setSettingsInterface<INISettingsInterface>();
+    loadConfig();
+    Resolution resolution = getData<OptionStorage>("options").getResolution();
+    resizeWindow(resolution.w, resolution.h);
+    setWindowTitle("CastleWars3");
+}
+
+void CastleWars::setupScenes()
+{
+Logger::LogDebug("setup scenes");
+    addScene<MainMenu>("mainmenu");
+    addScene<Credits>("credits");
+    addScene<Options>("options");
 }
 
 void CastleWars::teardown()
@@ -82,4 +101,11 @@ void CastleWars::teardown()
     settingsInterface->create("resolution",
                               std::to_string(options.resolutionIndex));
     settingsInterface->saveToFile("config.ini");
+}
+
+Json::Value CastleWars::serialize() const
+{
+    auto json = Game::serialize();
+    json["type"] = "CASTLEWARS";
+    return json;
 }
