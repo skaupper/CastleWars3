@@ -198,14 +198,12 @@ void Options::setupElements()
     screenSizeRect.w = screenSizeRect.h = 0;
     screenSizeRect.y += textPadding.y;
     screenSizeRect.x += textPadding.x;
-    // TODO: show right resolution
     addElement<Element>("options screen size label",
                         screenSizeRect).addAnimation<Animation>().addTexture(Texture("futurab",
                                 std::to_string((int) resolution.w) + "x" + std::to_string((int) resolution.h),
                                 textRect,
                                 Color(), TextQuality::BLENDED));
     getElement("options keyboard layout player 1 up button").activate(1);
-    Logger::LogCritical(getElement(0).getAnimation(0).getCurrentTexture().toString());
 }
 
 bool Options::onEvent(const Event &event)
@@ -315,7 +313,7 @@ bool Options::onEvent(const Event &event)
 
         if (selectedChanged) {
             for (auto &element : elements) {
-                if (hoverableElements[selected] == (element->getDescription())) {
+                if (hoverableElements[selected] == (element->getName())) {
                     element->activate(1);
                 } else {
                     element->activate(0);

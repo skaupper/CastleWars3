@@ -6,7 +6,6 @@ using namespace bkengine;
 void CastleWars::loadConfig()
 {
     auto &options = addData<OptionStorage>("options");
-    Logger::LogDebug("load config");
     settingsInterface->loadFromFile("config.ini");
 
     if (settingsInterface->hasValue("Player1.up")) {
@@ -68,7 +67,6 @@ void CastleWars::setupEnvironment()
 {
     Logger::UseStdout(true);
     Logger::SetLevel(0);
-    Logger::LogDebug("setup environment");
     Fonts::registerFont("Meath.ttf", 0, "meath");
     Fonts::registerFont("FUTURAB.ttf", 0, "futurab");
     setIcon("icon.ico");
@@ -81,7 +79,6 @@ void CastleWars::setupEnvironment()
 
 void CastleWars::setupScenes()
 {
-Logger::LogDebug("setup scenes");
     addScene<MainMenu>("mainmenu");
     addScene<Credits>("credits");
     addScene<Options>("options");

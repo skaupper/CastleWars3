@@ -21,7 +21,7 @@ void Credits::onLoop()
 
     if (move) {
         for(auto element : elements) {
-            if(element->getDescription() == "background") {
+            if(element->getName() == "background") {
                 continue;
             }
             std::static_pointer_cast<Entity>(element)->move(0, -0.075);
@@ -67,18 +67,7 @@ void Credits::setupElements()
 
 void Credits::resetLocations()
 {
-    reset();
-    /*
-    getElement<Element>("lead developers").setRenderBox({ 50, 105, 0, 0});
-    getElement<Element>("lead developer sebastian kaupper").setRenderBox({ 50, 111, 0, 0 });
-    getElement<Element>("lead developer christoph boehmwalder").setRenderBox({ 50, 116, 0, 0 });
-    getElement<Element>("designers").setRenderBox({ 50, 130, 0, 0 });
-    getElement<Element>("designer michael berthold").setRenderBox({ 50, 137, 0, 0 });
-    getElement<Element>("designer dominik hauer").setRenderBox({ 50, 142, 0, 0 });
-    getElement<Element>("special thanks").setRenderBox({ 50, 155, 0, 0 });
-    getElement<Element>("special thanks stephan wieninger").setRenderBox({ 50, 161, 0, 0 });
-    getElement<Element>("htl logo").setRenderBox({ 50, 180, 0, 0 });
-    */
+    restore();
 }
 
 Json::Value Credits::serialize() const
